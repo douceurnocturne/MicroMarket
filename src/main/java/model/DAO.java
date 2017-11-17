@@ -17,50 +17,56 @@ public class DAO {
         this.myDataSource = dataSource;
     }
 
-    
-    public void AddOrder(Order or){
-        
+    public void AddOrder(Order or) {
+
     }
-    
+
     public void UpdateOrder(Order or) {
-        
+
     }
-    
+
     public void DeleteOrder(Order or) {
-        
+
     }
-    
+
     public void Login(String user, int pass) {
-        
+
     }
-    
-    public List<Product> GetListProduct(){
+
+    public List<Product> GetListProduct() {
         List<Product> result = new LinkedList<>();
-        
+
         return result;
     }
-    
-    public List<Customer> GetCustomerList(){
+
+    public List<Customer> GetCustomerList() {
         List<Customer> result = new LinkedList<>();
-        
+
         return result;
     }
-    
-    public List<String> GetListCode(){
+
+    public List<String> GetListCode() {
         List<String> result = new LinkedList<>();
-        
+
         return result;
-    }  
-    
-    public float GetBenefictsByDate(String productCode, Date startDate, Date endDate){
+    }
+
+    public float GetBenefictsByProductCodeAndDate(String productCode, Date startDate, Date endDate) {
         float result = 0;
-        
+
+        return result;
+    }
+
+    public float GetBenefictsByState(String state) {
+        float result = 0;
+
         return result;
     }
     
-    
-    
-    
-    
-    
+    public float GetBenefictsByCustomerAndDate(Customer custmer, Date startDate, Date endDate) {
+        float result = 0;
+
+        return result;
+    }
+
 }
