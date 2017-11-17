@@ -1,5 +1,8 @@
 package model;
 
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 import javax.sql.DataSource;
 
 public class DAO {
@@ -14,11 +17,50 @@ public class DAO {
         this.myDataSource = dataSource;
     }
 
-    /**
-     * Liste des clients localisés dans un état des USA
-     *
-     * @param state l'état à rechercher (2 caractères)
-     * @return la liste des clients habitant dans cet état
-     * @throws SQLException
-     */
+    
+    public void AddOrder(Order or){
+        
+    }
+    
+    public void UpdateOrder(Order or) {
+        
+    }
+    
+    public void DeleteOrder(Order or) {
+        
+    }
+    
+    public void Login(String user, int pass) {
+        
+    }
+    
+    public List<Product> GetListProduct(){
+        List<Product> result = new LinkedList<>();
+        
+        return result;
+    }
+    
+    public List<Customer> GetCustomerList(){
+        List<Customer> result = new LinkedList<>();
+        
+        return result;
+    }
+    
+    public List<String> GetListCode(){
+        List<String> result = new LinkedList<>();
+        
+        return result;
+    }  
+    
+    public float GetBenefictsByDate(String productCode, Date startDate, Date endDate){
+        float result = 0;
+        
+        return result;
+    }
+    
+    
+    
+    
+    
+    
 }
