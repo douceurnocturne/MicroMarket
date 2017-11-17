@@ -21,6 +21,30 @@
             <version>7.0</version>
             <scope>provided</scope>
         </dependency>
+                <!-- Derby embedded database and JDBC Driver -->
+        <dependency>
+            <groupId>org.apache.derby</groupId>
+            <artifactId>derby</artifactId>
+            <version>10.14.1.0</version>
+        </dependency>
+        <!-- Derby network client JDBC driver -->
+        <dependency>
+            <groupId>org.apache.derby</groupId>
+            <artifactId>derbyclient</artifactId>
+            <version>10.14.1.0</version>
+        </dependency>
+        <!-- Derby tols (for initializing database from SQL script) -->
+        <dependency>
+            <groupId>org.apache.derby</groupId>
+            <artifactId>derbytools</artifactId>
+            <version>10.14.1.0</version>
+        </dependency>	
+        <!-- for generating JSON -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.8.2</version>
+        </dependency>
     </dependencies>
 
     <build>
