@@ -5,8 +5,7 @@
  */
 package model;
 
-import java.util.Date;
-
+import java.sql.Date;
 /**
  *
  * @author Ehsan
@@ -19,14 +18,17 @@ public class Order {
     private final Product produit;
     private final float shippingcost;
     private final Date date;
+    private final String freight;
 
-    public Order(int ordernumber, Customer customer, Product produit, int quantity, float shippingcost, Date date) {
+    public Order(int ordernumber, Customer customer, Product produit,
+            int quantity, float shippingcost, Date date, String freight) {
         this.customer = customer;
         this.ordernumber = ordernumber;
         this.produit = produit;
         this.quantity = quantity;
         this.shippingcost = shippingcost;
         this.date = date;
+        this.freight=freight;
 
     }
     
@@ -40,5 +42,25 @@ public class Order {
     
     public int GetNumber(){
         return this.ordernumber;
+    }
+    
+    public Customer GetCustomer(){
+        return this.customer;
+    }
+    
+    public Product GetProduct(){
+        return this.produit;
+    }
+    
+    public int GetQuantity() {
+        return this.quantity;
+    }
+    
+    public float GetShippingCost(){
+        return this.shippingcost;
+    }
+    
+    public String GetFreight(){
+        return this.freight;
     }
 }

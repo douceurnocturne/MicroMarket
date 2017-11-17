@@ -11,16 +11,22 @@ package model;
  */
 public class Product {
 
+    private final int productID;
     private final int price;
     private final int inStockQuantity;
     private final boolean available;
     private final int manufacturersID;
 
-    public Product(int price, int availableQuantity, boolean available, int manufacturers) {
+    public Product(int productID, int price, int availableQuantity, boolean available, int manufacturers) {
+        this.productID = productID;
         this.price = price;
         this.inStockQuantity = availableQuantity;
         this.available = available;
         this.manufacturersID = manufacturers;
+    }
+    
+    public int GetID(){
+        return this.productID;
     }
 
     public int GetQuantity() {
