@@ -24,8 +24,8 @@ public class Product {
         this.available = available;
         this.manufacturersID = manufacturers;
     }
-    
-    public int GetID(){
+
+    public int GetID() {
         return this.productID;
     }
 

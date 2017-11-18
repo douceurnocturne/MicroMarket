@@ -6,6 +6,7 @@
 package model;
 
 import java.sql.Date;
+
 /**
  *
  * @author Ehsan
@@ -28,39 +29,39 @@ public class Order {
         this.quantity = quantity;
         this.shippingcost = shippingcost;
         this.date = date;
-        this.freight=freight;
+        this.freight = freight;
 
     }
-    
-    public Date GetDate(){
+
+    public Date GetDate() {
         return this.date;
     }
-    
-    public float GetOrderCostWithShipping(){
-        return (this.quantity*this.produit.GetPrice())+this.shippingcost;
+
+    public float GetOrderCostWithShipping() {
+        return (this.quantity * this.produit.GetPrice()) + this.shippingcost;
     }
-    
-    public int GetNumber(){
+
+    public int GetNumber() {
         return this.ordernumber;
     }
-    
-    public Customer GetCustomer(){
+
+    public Customer GetCustomer() {
         return this.customer;
     }
-    
-    public Product GetProduct(){
+
+    public Product GetProduct() {
         return this.produit;
     }
-    
+
     public int GetQuantity() {
         return this.quantity;
     }
-    
-    public float GetShippingCost(){
+
+    public float GetShippingCost() {
         return this.shippingcost;
     }
-    
-    public String GetFreight(){
+
+    public String GetFreight() {
         return this.freight;
     }
 }

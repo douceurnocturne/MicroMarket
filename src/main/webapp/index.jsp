@@ -1,3 +1,12 @@
+<%-- 
+    Document   : index
+    Created on : 18 nov. 2017, 00:55:28
+    Author     : Ehsan
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 
 <!DOCTYPE html>
 <html>
@@ -21,7 +30,18 @@
                 <button type="submit" class="btn btn-primary btn-block btn-large">Let me in.</button>
             </form>
         </div>
-        <h2>${msg}</h2>
-        
+        <c:choose>
+            <%-- On n'a pas trouvé le client --%>
+            <c:when test="${empty message}">
+
+            </c:when>
+            <c:otherwise> <%-- On a trouvé --%>
+                <h2>${message}</h2>
+
+            </c:otherwise>
+        </c:choose>
+
+
     </body>
 </html>
+

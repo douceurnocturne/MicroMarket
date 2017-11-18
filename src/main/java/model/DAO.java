@@ -24,7 +24,7 @@ public class DAO {
     }
 
     public int AddOrder(Order or) throws DAOException {
-        
+
         int resualt = 0;
         String sql = "INSERT INTO PURCHASE_ORDER (ORDER_NUM, CUSTOMER_ID,"
                 + " PRODUCT_ID, QUANTITY, SHIPPING_COST, SALES_DATE,"
@@ -41,7 +41,7 @@ public class DAO {
             stmt.setDate(6, or.GetDate());
             stmt.setDate(7, or.GetDate());  /// toDo
             stmt.setString(7, or.GetFreight());
-            
+
             resualt = stmt.executeUpdate();
 
         } catch (SQLException ex) {
