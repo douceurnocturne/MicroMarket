@@ -44,9 +44,18 @@ public class DAOTest {
         String description = "un superbe sac";
         String manufacturers = "test";
         Product produit = new Product(productID, price, availableQuantity, available, description, manufacturers);
-        //Order(int ordernumber, Customer customer, Product product, int quantity, float shippingcost, Date date, String freight);
+        //On créer la commande
+        int ordernumber = 5;
+        int quantity = 5;
+        float shippingcost = 10;
+        String freight = "test";
+        Date date = new Date(1, 2, 2010);
+        Order commande = new Order(ordernumber, client, produit, quantity, shippingcost, (Date) date, freight);
     }
     
+    @Test
+    
+   
     @After
     public void tearDown() {
     }
