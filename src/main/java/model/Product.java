@@ -11,29 +11,36 @@ package model;
  */
 public class Product {
 
-    private final int productID;
-    private final int price;
+    private final int productid;
+    private final float price;
     private final int inStockQuantity;
     private final boolean available;
-    private final int manufacturersID;
+    private final String manufacturer;
+    private final String description;
 
-    public Product(int productID, int price, int availableQuantity, boolean available, int manufacturers) {
-        this.productID = productID;
+    public Product(int productID, float price, int availableQuantity, boolean available,
+            String description, String manufacturers) {
+        this.productid = productID;
         this.price = price;
         this.inStockQuantity = availableQuantity;
         this.available = available;
-        this.manufacturersID = manufacturers;
+        this.manufacturer = manufacturers;
+        this.description = description;
     }
 
-    public int GetID() {
-        return this.productID;
+    public int getProductid() {
+        return this.productid;
     }
 
-    public int GetQuantity() {
+    public String getDescription() {
+        return this.description;
+    }
+
+    public int getInStockQuantity() {
         return this.inStockQuantity;
     }
 
-    public int GetPrice() {
+    public float getPrice() {
         return this.price;
     }
 

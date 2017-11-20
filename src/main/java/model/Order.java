@@ -16,16 +16,16 @@ public class Order {
     private final Customer customer;
     private final int ordernumber;
     private final int quantity;
-    private final Product produit;
+    private final Product product;
     private final float shippingcost;
     private final Date date;
     private final String freight;
 
-    public Order(int ordernumber, Customer customer, Product produit,
+    public Order(int ordernumber, Customer customer, Product product,
             int quantity, float shippingcost, Date date, String freight) {
         this.customer = customer;
         this.ordernumber = ordernumber;
-        this.produit = produit;
+        this.product = product;
         this.quantity = quantity;
         this.shippingcost = shippingcost;
         this.date = date;
@@ -33,35 +33,35 @@ public class Order {
 
     }
 
-    public Date GetDate() {
+    public Date getDate() {
         return this.date;
     }
 
-    public float GetOrderCostWithShipping() {
-        return (this.quantity * this.produit.GetPrice()) + this.shippingcost;
+    public float getOrderCostWithShipping() {
+        return (this.quantity * this.product.getPrice()) + this.shippingcost;
     }
 
-    public int GetNumber() {
+    public int getOrdernumber() {
         return this.ordernumber;
     }
 
-    public Customer GetCustomer() {
+    public Customer getCustomer() {
         return this.customer;
     }
 
-    public Product GetProduct() {
-        return this.produit;
+    public Product getProduct() {
+        return this.product;
     }
 
-    public int GetQuantity() {
+    public int getQuantity() {
         return this.quantity;
     }
 
-    public float GetShippingCost() {
+    public float getShippingcost() {
         return this.shippingcost;
     }
 
-    public String GetFreight() {
+    public String getFreight() {
         return this.freight;
     }
 }

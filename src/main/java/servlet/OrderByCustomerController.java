@@ -6,8 +6,7 @@
 package servlet;
 
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,15 +14,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Customer;
 import model.DAO;
-import model.DAOException;
 import model.DataSourceFactory;
+import model.Order;
 
 /**
  *
  * @author Ehsan
  */
-@WebServlet(name = "LoginController", urlPatterns = {"/LoginController"})
-public class LoginController extends HttpServlet {
+@WebServlet(name = "OrderByCustomerController", urlPatterns = {"/OrderByCustomerController"})
+public class OrderByCustomerController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,51 +36,24 @@ public class LoginController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String msg = "";
-        boolean isAdmin = false;
-        String user = request.getParameter("user");
-        String pass = request.getParameter("pass");
-        if (user.equals("admin") && pass.equals("admin")) {
-            msg = "Bonjour Admin";
-            isAdmin = true;
-            request.getSession().setAttribute("user", "admin");
-        } else {
+        Customer c = null;
+
+        if (request.getSession().getAttribute("user") != null) {
+            c = (Customer) request.getSession().getAttribute("user");
+
             try {
-                int id = 0;
                 DAO dao = new DAO(DataSourceFactory.getDataSource(DataSourceFactory.DriverType.embedded));
-                try {
-                    id = Integer.parseInt(pass);
-                } catch (NumberFormatException ex) {
-                    throw new DAOException("Password must be numeric.");
-                }
+                List<Order> result = dao.GetOrderByCustomer(c);
+                request.setAttribute("orders", result);
+                request.getRequestDispatcher("customer.jsp").forward(request, response);
 
-                Customer customer = dao.Login(user, id);
-                if (customer != null) {
-                    request.getSession().setAttribute("user", customer);
-
-                } else {
-                    throw new DAOException("Your account or password is incorrect.");
-                }
-
-            } catch (DAOException ex) {
-                msg = ex.getMessage();
-                request.setAttribute("message", msg);
+            } catch (IOException | ServletException ex) {
+                request.setAttribute("message", ex.getMessage());
                 request.getRequestDispatcher("errorView.jsp").forward(request, response);
-                Logger.getLogger("LoginController").log(Level.SEVERE, "Action en erreur", ex);
-
             }
-        }
-
-        if (isAdmin) {
-            //Forward to admin jsp
-            request.getRequestDispatcher("admin.jsp").forward(request, response);
         } else {
-            //Forward to client jsp
-            response.sendRedirect(request.getContextPath() + "/OrderByCustomerController");
-
-            //request.getRequestDispatcher("customer.jsp").forward(request, response);
+            response.sendRedirect(request.getContextPath() + "/Login.jsp");
         }
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

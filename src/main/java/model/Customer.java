@@ -11,43 +11,43 @@ package model;
  */
 public class Customer {
 
-    private final int customerId;
+    private final int customerid;
     private final String name;
-    private final String addressLine1;
+    private final String addressline1;
     private final String state;
     private final String city;
     private final String email;
 
-    public Customer(int customerID, String name, String address1, String state, String city, String email) {
-        this.customerId = customerID;
+    public Customer(int customerid, String name, String address1, String state, String city, String email) {
+        this.customerid = customerid;
         this.name = name;
-        this.addressLine1 = address1;
+        this.addressline1 = address1;
         this.state = state;
         this.city = city;
         this.email = email;
     }
 
-    public String GetName() {
-        return this.name;
+    public String getName() {
+        return name;
     }
 
-    public String GetAddress() {
-        return this.addressLine1;
+    public String getaddress() {
+        return this.addressline1;
     }
 
-    public int GetID() {
-        return this.customerId;
+    public int getcustomerid() {
+        return this.customerid;
     }
 
-    public String GetState() {
+    public String getstate() {
         return this.state;
     }
 
-    public String GetCity() {
+    public String getcity() {
         return this.city;
     }
 
-    public String GetEmail() {
+    public String getemail() {
         return this.email;
     }
 
