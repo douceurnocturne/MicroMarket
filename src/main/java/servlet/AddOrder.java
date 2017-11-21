@@ -6,6 +6,11 @@
 package servlet;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -17,13 +22,15 @@ import model.Customer;
 import model.DAO;
 import model.DAOException;
 import model.DataSourceFactory;
+import model.Order;
+import model.Product;
 
 /**
  *
  * @author Ehsan
  */
-@WebServlet(name = "LoginController", urlPatterns = {"/LoginController"})
-public class LoginController extends HttpServlet {
+@WebServlet(name = "AddOrder", urlPatterns = {"/AddOrder"})
+public class AddOrder extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,54 +44,42 @@ public class LoginController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String msg = "";
-        boolean isAdmin = false;
-        String user = request.getParameter("user");
-        String pass = request.getParameter("pass");
-        String login = getInitParameter("login");
-        String password = getInitParameter("pass");
-        String username = getInitParameter("userName");
-        if (user.equals(login) && pass.equals(password)) {
-           
-            isAdmin = true;
-            Customer admin = new Customer(0, username, "--", "--", "--", "--");
-            request.getSession().setAttribute("user", admin);
-        } else {
+
+        DAO dao = new DAO(DataSourceFactory.getDataSource(DataSourceFactory.DriverType.embedded));
+        if (request.getParameter("ordernumber_input") != null) {
             try {
-                int id = 0;
-                DAO dao = new DAO(DataSourceFactory.getDataSource(DataSourceFactory.DriverType.embedded));
-                try {
-                    id = Integer.parseInt(pass);
-                } catch (NumberFormatException ex) {
-                    throw new DAOException("Password must be numeric.");
-                }
 
-                Customer customer = dao.Login(user, id);
-                if (customer != null) {
-                    request.getSession().setAttribute("user", customer);
+                DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                int ordernumber = Integer.parseInt(request.getParameter("ordernumber_input"));
+                int quantity = Integer.parseInt(request.getParameter("quantity"));
+                float shipping_cost = Float.parseFloat(request.getParameter("shipping_cost"));
+                shipping_cost += 1.2;
+                java.sql.Date sale_date = new java.sql.Date(format.parse(request.getParameter("sale_date")).getTime());
+                java.sql.Date shipping_date = new java.sql.Date(format.parse(request.getParameter("shipping_date")).getTime());
+                String freight = request.getParameter("freight");
+                Customer c;
+                c = (Customer) request.getSession().getAttribute("user");
+                Product p;
+                String myObjectId = request.getParameter("selectedProduct");
+                p = (Product) request.getSession().getAttribute(myObjectId);
+               // p = (Product) request.getSession().getAttribute("selectedProduct");
+                /*int ordernumber, Customer customer, Product product,
+            int quantity, float shippingcost, Date date, String freight */
+                Order order = new Order(ordernumber, c, p, quantity, shipping_cost,
+                        sale_date, freight);
+                dao.AddOrder(order);
 
-                } else {
-                    throw new DAOException("Your account or password is incorrect.");
-                }
-
+            } catch (ParseException ex) {
+                Logger.getLogger(AddOrder.class.getName()).log(Level.SEVERE, null, ex);
             } catch (DAOException ex) {
-                msg = ex.getMessage();
-                request.setAttribute("message", msg);
-                request.getRequestDispatcher("errorView.jsp").forward(request, response);
-                Logger.getLogger("LoginController").log(Level.SEVERE, "Action en erreur", ex);
-
+                Logger.getLogger(AddOrder.class.getName()).log(Level.SEVERE, null, ex);
             }
+
         }
 
-        if (isAdmin) {
-            //Forward to admin jsp
-            request.getRequestDispatcher("admin.jsp").forward(request, response);
-        } else {
-            //Forward to client jsp
-            response.sendRedirect(request.getContextPath() + "/OrderByCustomerController");
-
-            //request.getRequestDispatcher("customer.jsp").forward(request, response);
-        }
+        List<Product> result = dao.getProductList();
+        request.setAttribute("productlist", result);
+        request.getRequestDispatcher("AddOrder.jsp").forward(request, response);
 
     }
 

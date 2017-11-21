@@ -13,7 +13,7 @@ public class Product {
 
     private final int productid;
     private final float price;
-    private final int inStockQuantity;
+    private final int instockquantity;
     private final boolean available;
     private final String manufacturer;
     private final String description;
@@ -22,7 +22,7 @@ public class Product {
             String description, String manufacturers) {
         this.productid = productID;
         this.price = price;
-        this.inStockQuantity = availableQuantity;
+        this.instockquantity = availableQuantity;
         this.available = available;
         this.manufacturer = manufacturers;
         this.description = description;
@@ -36,12 +36,16 @@ public class Product {
         return this.description;
     }
 
-    public int getInStockQuantity() {
-        return this.inStockQuantity;
+    public int getInstockquantity() {
+        return this.instockquantity;
     }
 
     public float getPrice() {
         return this.price;
+    }
+    
+    public String getManufacturer() {
+        return this.manufacturer;
     }
 
     public boolean isAvailable() {

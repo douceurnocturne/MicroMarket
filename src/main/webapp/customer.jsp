@@ -11,10 +11,12 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        
+        <link rel="stylesheet" href="css/W3Style.css">
+        <link rel="stylesheet" href="css/CustomerStyle.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="css/CustomerStyle.css"> 
+        
         <title>Customer Page</title>
     </head>
     <body>
@@ -27,23 +29,23 @@
                     <div class="w3-dropdown-content w3-card-4 w3-bar-block" style="width:300px">      
                         <a href="#" class="w3-bar-item w3-button">blablaa</a>
                         <a href="#" class="w3-bar-item w3-button">do blabla</a>
-                        <a href="#" class="w3-bar-item w3-button"><i class="fa fa-sign-out" aria-hidden="true"></i> Signeout</a>
+                        <a href="${pageContext.request.contextPath}/LogoutController" class="w3-bar-item w3-button"><i class="fa fa-sign-out" aria-hidden="true"></i> Signeout</a>
                     </div>
                 </div>
-                
+
                 <div class="w3-left w3-hide-small">
-                    <a href="#work" class="w3-bar-item w3-button"><i class="fa fa-th"></i> WORK</a>
+                    <a href="${pageContext.request.contextPath}/AddOrder" class="w3-bar-item w3-button"><i class="fa fa-th"></i> New Order </a>
                     <a href="#team" class="w3-bar-item w3-button"><i class="fa fa-user"></i> TEAM</a>
                     <a href="#pricing" class="w3-bar-item w3-button"><i class="fa fa-usd"></i> PRICING</a>
                     <a href="#contact" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i> CONTACT</a>
                     <a href="#about" class="w3-bar-item w3-button">ABOUT</a>
                 </div>
- 
+
             </div>
         </div>
-
+        <div style="padding-top:100px; padding-left: 48px; font-size: 28px;"> Welcome back ${user.name} </div>
         <div id="home">
-            <h1> Customer : ${user.name} </h1>
+
             <table border="1">
 
                 <tr><th>Order Number</th><th>Produit description</th>

@@ -154,9 +154,34 @@ public class DAO {
         return result;
     }
 
-    public List<String> GetListCode() {
-        List<String> result = new LinkedList<>();
+    public List<Product> getProductList() {
+        List<Product> result = new LinkedList<>();
+        String sql = "SELECT distinct PRODUCT_ID,PURCHASE_COST,QUANTITY_ON_HAND,"
+                + " AVAILABLE,DESCRIPTION,APP.MANUFACTURER.NAME AS \"MANUFACTURER_Name\" "
+                + "FROM APP.PRODUCT, APP.MANUFACTURER WHERE "
+                + "APP.MANUFACTURER.MANUFACTURER_ID =APP.PRODUCT.MANUFACTURER_ID";
+        try (Connection connection = myDataSource.getConnection();
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
 
+                    int product_id = rs.getInt("PRODUCT_ID");
+                    float price = rs.getFloat("PURCHASE_COST");
+                    boolean available = rs.getBoolean("AVAILABLE");
+                    int quantity = rs.getInt("QUANTITY_ON_HAND");
+                    String desc = rs.getString("DESCRIPTION");
+                    String man_name = rs.getString("MANUFACTURER_Name");
+
+                    Product product = new Product(product_id, price, quantity,
+                            available, desc, man_name);
+
+                    result.add(product);
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return result;
     }
 
