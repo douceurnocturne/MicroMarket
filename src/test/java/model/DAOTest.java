@@ -63,6 +63,19 @@ public class DAOTest {
         assertEquals(L.get(0),commande3);
     }
     
+    @Test
+    public void testGetBenefictsByState(){
+        //manuf id = 19986196
+        //product id = 980030
+        //quant = 10
+        //unit price = 59.95
+        //ship cost = 275
+        float res = (float)59.95*10-275;
+        DAO dao = new DAO(DataSourceFactory.getDataSource(DataSourceFactory.DriverType.embedded));
+        float benef = dao.GetBenefictsByState("IL");
+        assertEquals(benef,res,0.02);
+    }
+    
     @After
     public void tearDown() {
     }
