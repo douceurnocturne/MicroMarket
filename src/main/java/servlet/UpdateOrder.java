@@ -28,8 +28,8 @@ import model.Product;
  *
  * @author Ehsan
  */
-@WebServlet(name = "AddOrder", urlPatterns = {"/AddOrder"})
-public class AddOrder extends HttpServlet {
+@WebServlet(name = "UpdateOrder", urlPatterns = {"/UpdateOrder"})
+public class UpdateOrder extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -43,43 +43,58 @@ public class AddOrder extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-
+        
         DAO dao = new DAO(DataSourceFactory.getDataSource(DataSourceFactory.DriverType.embedded));
-        if (request.getParameter("ordernumber_input") != null) {
-            try {
-
-                DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                int ordernumber = Integer.parseInt(request.getParameter("ordernumber_input"));
-                int quantity = Integer.parseInt(request.getParameter("quantity"));
-                float shipping_cost = Float.parseFloat(request.getParameter("shipping_cost"));
-                java.sql.Date sale_date = new java.sql.Date(format.parse(request.getParameter("sale_date")).getTime());
-                java.sql.Date shipping_date = new java.sql.Date(format.parse(request.getParameter("shipping_date")).getTime());
-                String freight = request.getParameter("freight");
-                Customer c;
-                c = (Customer) request.getSession().getAttribute("user");
-                int productid = Integer.parseInt(request.getParameter("product"));
-                Product p =dao.getProductByid(productid);
-
-                Order order = new Order(ordernumber, c, p, quantity, shipping_cost,
-                        sale_date,shipping_date, freight);
-                
-                int res = dao.AddOrder(order);
-                if (res == 1) {
-                    request.setAttribute("message", "Got it, order Number:"+ordernumber);
-                }
-
-            } catch (ParseException ex) {
-                Logger.getLogger(AddOrder.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (DAOException ex) {
-                request.setAttribute("message", "Sorry your order couldn't be placed :"+ex.getMessage());
-                Logger.getLogger(AddOrder.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-        }
-
+        String message = "";
+        int ordernumber = 0;
+        int productid = 0 ;
+        Customer c;
+        Order order;
+        String action = request.getParameter("action");
+        String ornumber = request.getParameter("ordernumber");
+        action = (action == null) ? "" : action; // Pour le switch qui n'aime pas les null
+        c = (Customer) request.getSession().getAttribute("user");
         List<String> result = dao.getProductCodes();
         request.setAttribute("productCodeslist", result);
-        request.getRequestDispatcher("AddOrder.jsp").forward(request, response);
+        try {
+            ordernumber = Integer.parseInt(ornumber);
+            switch (action) {
+                case "get":
+
+                    order = dao.getCustomerOrderByid(c, ordernumber);
+                    request.setAttribute("order", order);
+                    break;
+
+                case "update":
+                    try {
+                        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                        int quantity = Integer.parseInt(request.getParameter("quantity"));
+                        float shipping_cost = Float.parseFloat(request.getParameter("shipping_cost"));
+                        java.sql.Date sale_date = new java.sql.Date(format.parse(request.getParameter("sale_date")).getTime());
+                        java.sql.Date shipping_date = new java.sql.Date(format.parse(request.getParameter("shipping_date")).getTime());
+                        String freight = request.getParameter("freight");
+                        String proid = request.getParameter("productid");
+                        productid = Integer.parseInt(proid);
+                        Product p = dao.getProductByid(productid);
+
+                        order = new Order(ordernumber, c, p, quantity, shipping_cost,
+                                sale_date, shipping_date, freight);
+                        dao.UpdateOrder(order);
+                        message = "Your order has been successfully updated";
+                        break;
+                    } catch (ParseException ex) {
+                        message = ex.getMessage();
+                    }
+            }
+        } catch (NumberFormatException ex) {
+            message = ex.getMessage();
+        } catch (DAOException ex) {
+            message = ex.getMessage();
+            Logger.getLogger(UpdateOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        request.setAttribute("message", message);
+        request.getRequestDispatcher("UpdateOrder.jsp").forward(request, response);
 
     }
 

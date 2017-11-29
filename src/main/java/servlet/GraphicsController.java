@@ -5,11 +5,13 @@
  */
 package servlet;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -17,19 +19,15 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.Customer;
 import model.DAO;
-import model.DAOException;
 import model.DataSourceFactory;
-import model.Order;
-import model.Product;
 
 /**
  *
  * @author Ehsan
  */
-@WebServlet(name = "AddOrder", urlPatterns = {"/AddOrder"})
-public class AddOrder extends HttpServlet {
+@WebServlet(name = "GraphicsController", urlPatterns = {"/GraphicsController"})
+public class GraphicsController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,44 +40,33 @@ public class AddOrder extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("application/json;charset=UTF-8");
 
+        java.sql.Date start_date = null;
+        java.sql.Date end_date = null;
         DAO dao = new DAO(DataSourceFactory.getDataSource(DataSourceFactory.DriverType.embedded));
-        if (request.getParameter("ordernumber_input") != null) {
-            try {
+        String graphic_type = request.getParameter("graphic");
+        graphic_type = (graphic_type == null) ? "" : graphic_type;
+        String sdate = request.getParameter("start_date");
+        String edate = request.getParameter("end_date");
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
-                DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                int ordernumber = Integer.parseInt(request.getParameter("ordernumber_input"));
-                int quantity = Integer.parseInt(request.getParameter("quantity"));
-                float shipping_cost = Float.parseFloat(request.getParameter("shipping_cost"));
-                java.sql.Date sale_date = new java.sql.Date(format.parse(request.getParameter("sale_date")).getTime());
-                java.sql.Date shipping_date = new java.sql.Date(format.parse(request.getParameter("shipping_date")).getTime());
-                String freight = request.getParameter("freight");
-                Customer c;
-                c = (Customer) request.getSession().getAttribute("user");
-                int productid = Integer.parseInt(request.getParameter("product"));
-                Product p =dao.getProductByid(productid);
-
-                Order order = new Order(ordernumber, c, p, quantity, shipping_cost,
-                        sale_date,shipping_date, freight);
-                
-                int res = dao.AddOrder(order);
-                if (res == 1) {
-                    request.setAttribute("message", "Got it, order Number:"+ordernumber);
-                }
-
-            } catch (ParseException ex) {
-                Logger.getLogger(AddOrder.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (DAOException ex) {
-                request.setAttribute("message", "Sorry your order couldn't be placed :"+ex.getMessage());
-                Logger.getLogger(AddOrder.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
+        try {
+            start_date = new java.sql.Date(format.parse(sdate).getTime());
+            end_date = new java.sql.Date(format.parse(edate).getTime());
+        } catch (ParseException ex) {
+            Logger.getLogger(GraphicsController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        List<String> result = dao.getProductCodes();
-        request.setAttribute("productCodeslist", result);
-        request.getRequestDispatcher("AddOrder.jsp").forward(request, response);
+        switch (graphic_type) {
+            case "codes":
+                
+                try (PrintWriter out = response.getWriter()) {
+                    Gson gson = new GsonBuilder().setPrettyPrinting().create();
+                    out.println(gson.toJson(dao.GetBenefictsByProductCodesAndDate(start_date, end_date)));
+                }
+                break;
+        }
 
     }
 

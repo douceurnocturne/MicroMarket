@@ -81,7 +81,7 @@ public class LoginController extends HttpServlet {
             request.getRequestDispatcher("admin.jsp").forward(request, response);
         } else {
             //Forward to client jsp
-            response.sendRedirect(request.getContextPath() + "/OrderByCustomerController");
+            response.sendRedirect(request.getContextPath() + "/customer.jsp");
 
             //request.getRequestDispatcher("customer.jsp").forward(request, response);
         }

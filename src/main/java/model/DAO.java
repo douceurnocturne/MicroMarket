@@ -5,8 +5,10 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sql.DataSource;
@@ -38,30 +40,55 @@ public class DAO {
             stmt.setInt(3, or.getProduct().getProductid());
             stmt.setInt(4, or.getQuantity());
             stmt.setFloat(5, or.getShippingcost());
-            stmt.setDate(6, or.getDate());
-            stmt.setDate(7, or.getDate());  /// toDo
-            stmt.setString(7, or.getFreight());
+            stmt.setDate(6, or.getSaledate());
+            stmt.setDate(7, or.getShippingdate());
+            stmt.setString(8, or.getFreight());
 
             resualt = stmt.executeUpdate();
 
         } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
             Logger.getLogger("DAO").log(Level.SEVERE, null, ex);
             throw new DAOException(ex.getMessage());
         }
         return resualt;
     }
 
-    public void UpdateOrder(Order or) {
+    public int UpdateOrder(Order or) throws DAOException {
+        int resualt = 0;
+        String sql = "UPDATE PURCHASE_ORDER "
+                + "SET PRODUCT_ID = ?, QUANTITY = ?, SHIPPING_COST = ?, "
+                + "SALES_DATE = ?, SHIPPING_DATE = ?, FREIGHT_COMPANY = ? "
+                + "WHERE ORDER_NUM = ? ";
+        try (Connection connection = myDataSource.getConnection();
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
 
+            stmt.setInt(1, or.getProduct().getProductid());
+            stmt.setInt(2, or.getQuantity());
+            stmt.setFloat(3, or.getShippingcost());
+            stmt.setDate(4, or.getSaledate());
+            stmt.setDate(5, or.getShippingdate());
+            stmt.setString(6, or.getFreight());
+            stmt.setInt(7, or.getOrdernumber());
+
+            resualt = stmt.executeUpdate();
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            Logger.getLogger("DAO").log(Level.SEVERE, null, ex);
+            throw new DAOException(ex.getMessage());
+        }
+
+        return resualt;
     }
 
-    public int DeleteOrder(Order or) throws DAOException {
+    public int DeleteOrder(int ordernumber) throws DAOException {
         int resualt = 0;
 
         String sql = "DELETE FROM APP.PURCHASE_ORDER WHERE ORDER_NUM=?";
         try (Connection connection = myDataSource.getConnection();
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, or.getOrdernumber());
+            stmt.setInt(1, ordernumber);
             resualt = stmt.executeUpdate();
 
         } catch (SQLException ex) {
@@ -98,35 +125,6 @@ public class DAO {
         return result;
     }
 
-    public List<Product> GetListProduct() {
-        List<Product> result = new LinkedList<>();
-        String sql = "SELECT * FROM APP.PRODUCT";
-        try (Connection connection = myDataSource.getConnection();
-                PreparedStatement stmt = connection.prepareStatement(sql)) {
-
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-
-                    int productID = rs.getInt("PRODUCT_ID");
-                    int price = rs.getInt("PURCHASE_COST");
-                    int availableQuantity = rs.getInt("QUANTITY_ON_HAND");
-                    boolean available = rs.getBoolean("AVAILABLE");
-                    String manufacturers = rs.getString("NAME");
-                    String description = rs.getString("DESCRIPTION");
-
-                    Product pro = new Product(productID, price,
-                            availableQuantity, available, description, manufacturers);
-
-                    result.add(pro);
-                }
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return result;
-    }
-
     public List<Customer> GetCustomerList() {
         List<Customer> result = new LinkedList<>();
         String sql = "SELECT * FROM APP.CUSTOMER";
@@ -154,14 +152,34 @@ public class DAO {
         return result;
     }
 
-    public List<Product> getProductList() {
+    public List<String> getProductCodes() {
+        List<String> result = new LinkedList<>();
+        String sql = "SELECT distinct PROD_CODE FROM APP.PRODUCT_CODE";
+        try (Connection connection = myDataSource.getConnection();
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    String cat = rs.getString("PROD_CODE");
+                    result.add(cat);
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+    }
+
+    public List<Product> getProductList(String cat) {
         List<Product> result = new LinkedList<>();
         String sql = "SELECT distinct PRODUCT_ID,PURCHASE_COST,QUANTITY_ON_HAND,"
                 + " AVAILABLE,DESCRIPTION,APP.MANUFACTURER.NAME AS \"MANUFACTURER_Name\" "
                 + "FROM APP.PRODUCT, APP.MANUFACTURER WHERE "
+                + "APP.PRODUCT.PRODUCT_CODE=? AND "
                 + "APP.MANUFACTURER.MANUFACTURER_ID =APP.PRODUCT.MANUFACTURER_ID";
         try (Connection connection = myDataSource.getConnection();
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, cat);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
 
@@ -173,7 +191,7 @@ public class DAO {
                     String man_name = rs.getString("MANUFACTURER_Name");
 
                     Product product = new Product(product_id, price, quantity,
-                            available, desc, man_name);
+                            available, desc, man_name, cat);
 
                     result.add(product);
                 }
@@ -185,8 +203,35 @@ public class DAO {
         return result;
     }
 
-    public float GetBenefictsByProductCodeAndDate(String productCode, Date startDate, Date endDate) {
-        float result = 0;
+    public Map<String, Float> GetBenefictsByProductCodesAndDate(Date startDate, Date endDate) {
+
+        Map<String, Float> result = new HashMap<String, Float>();
+
+        String sql = "SELECT PRODUCT_CODE.DESCRIPTION, "
+                + "SUM(PRODUCT.PURCHASE_COST*PURCHASE_ORDER.QUANTITY) "
+                + "AS Earnings FROM APP.PRODUCT,APP.PURCHASE_ORDER,PRODUCT_CODE "
+                + "WHERE PRODUCT.PRODUCT_ID=PURCHASE_ORDER.PRODUCT_ID "
+                + "AND PRODUCT_CODE.PROD_CODE=PRODUCT.PRODUCT_CODE "
+                + "AND PURCHASE_ORDER.SALES_DATE BETWEEN ? AND ? "
+                + "GROUP BY PRODUCT_CODE.DESCRIPTION";
+        try (Connection connection = myDataSource.getConnection();
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setDate(1, startDate);
+            stmt.setDate(2, endDate);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+
+                    float earning = rs.getFloat("Earnings");
+                    String desc = rs.getString("DESCRIPTION");
+                    result.put(desc, earning);
+                    
+
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         return result;
     }
@@ -201,6 +246,75 @@ public class DAO {
         float result = 0;
 
         return result;
+    }
+
+    public Product getProductByid(int productid) throws DAOException {
+        Product product = null;
+        String sql = "SELECT APP.PRODUCT.PRODUCT_ID, APP.PRODUCT.PRODUCT_CODE, "
+                + "APP.PRODUCT.PURCHASE_COST, APP.PRODUCT.QUANTITY_ON_HAND, "
+                + "APP.PRODUCT.AVAILABLE,APP.PRODUCT.DESCRIPTION, "
+                + "APP.PRODUCT.PRODUCT_CODE, APP.MANUFACTURER.NAME AS MANAME,"
+                + "APP.PRODUCT.MANUFACTURER_ID"
+                + " FROM APP.MANUFACTURER,APP.PRODUCT WHERE "
+                + "APP.MANUFACTURER.MANUFACTURER_ID=APP.PRODUCT.MANUFACTURER_ID"
+                + " AND APP.PRODUCT.PRODUCT_ID=?";
+        try (Connection connection = myDataSource.getConnection();
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setInt(1, productid);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    float price = rs.getFloat("PURCHASE_COST");
+                    int availableQuantity = rs.getInt("QUANTITY_ON_HAND");
+                    boolean available = rs.getBoolean("AVAILABLE");
+                    String description = rs.getString("DESCRIPTION");
+                    String manufacturers = rs.getString("MANAME");
+                    int manufacturersid = rs.getInt("MANUFACTURER_ID");
+                    String cat = rs.getString("PRODUCT_CODE");
+                    product = new Product(productid, price, availableQuantity,
+                            available, description, manufacturers, cat);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger("DAO").log(Level.SEVERE, null, ex);
+            throw new DAOException(ex.getMessage());
+        }
+
+        return product;
+
+    }
+
+    public Order getCustomerOrderByid(Customer c, int ordernumber) {
+
+        Order order = null;
+        String sql = "SELECT * FROM APP.PURCHASE_ORDER WHERE ORDER_NUM = ?";
+        try (Connection connection = myDataSource.getConnection();
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setInt(1, ordernumber);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    float shipping_cost = rs.getFloat("SHIPPING_COST");
+                    int quantity = rs.getInt("QUANTITY");
+                    int productid = rs.getInt("PRODUCT_ID");
+                    java.sql.Date sale_date = new java.sql.Date(rs.getDate("SALES_DATE").getTime());
+                    java.sql.Date shipping_date = new java.sql.Date(rs.getDate("SHIPPING_DATE").getTime());
+                    String freight = rs.getString("FREIGHT_COMPANY");
+
+                    order = new Order(ordernumber, c, this.getProductByid(productid), quantity, shipping_cost,
+                            sale_date, shipping_date, freight);
+                }
+            } catch (DAOException ex) {
+                Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger("DAO").log(Level.SEVERE, null, ex);
+
+        }
+
+        return order;
     }
 
     public List<Order> GetOrderByCustomer(Customer customer) {
@@ -226,14 +340,16 @@ public class DAO {
                     int ordernumber = rs.getInt("ORDER_NUM");
                     int quantity = rs.getInt("QUANTITY");
                     float shippingcost = rs.getFloat("SHIPPING_COST");
-                    Date date = rs.getDate("SALES_DATE");
+                    Date saledate = rs.getDate("SALES_DATE");
+                    Date shippingdate = rs.getDate("SHIPPING_DATE");
                     String freight = rs.getString("FREIGHT_COMPANY");
                     String description = rs.getString("DESCRIPTION");
+                    String cat = rs.getString("PRODUCT_CODE");
 
                     Product pro = new Product(productID, price, availableQuantity,
-                            available, description, manufacturers);
+                            available, description, manufacturers, cat);
                     Order order = new Order(ordernumber, customer, pro, quantity,
-                            shippingcost, date, freight);
+                            shippingcost, saledate, shippingdate, freight);
 
                     //Add to list
                     result.add(order);

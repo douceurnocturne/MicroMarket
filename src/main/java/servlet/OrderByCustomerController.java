@@ -45,7 +45,7 @@ public class OrderByCustomerController extends HttpServlet {
                 DAO dao = new DAO(DataSourceFactory.getDataSource(DataSourceFactory.DriverType.embedded));
                 List<Order> result = dao.GetOrderByCustomer(c);
                 request.setAttribute("orders", result);
-                request.getRequestDispatcher("customer.jsp").forward(request, response);
+                request.getRequestDispatcher("customer_1.jsp").forward(request, response);
 
             } catch (IOException | ServletException ex) {
                 request.setAttribute("message", ex.getMessage());

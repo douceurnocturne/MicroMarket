@@ -1,5 +1,5 @@
 <%-- 
-    Document   : AddOrder
+    Document   : UpdateOrder
     Created on : 20 nov. 2017, 17:36:09
     Author     : Ehsan
 --%>
@@ -17,7 +17,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="css/AddOrderStyle.css"> 
         <script	src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-        <title>New Order</title>
+        <title>Update Order</title>
     </head>
     <body>
         <script> 
@@ -25,7 +25,7 @@
                 alert(JSON.parse(xhr.responseText).message);
             }
             
-                function getProduct() {
+            function getProduct() {
                 // On fait un appel AJAX pour chercher les codes
                 var e = document.getElementById('product_Cat_selector');
                 document.getElementById('productCat').value = e.options[e.selectedIndex].value;
@@ -38,7 +38,9 @@
                     success: // La fonction qui traite les résultats
                             function (result) {
                                 var s = document.getElementById('product_selector');
+                                document.getElementById('productid').value=result[0].productid;
                                 s.innerHTML='';
+                                var opt = document.createElement('option');
                                 var i;  
                                 for (i in result) {
                                        var opt = document.createElement('option');
@@ -46,10 +48,13 @@
                                         opt.innerHTML = result[i].description;
                                         s.appendChild(opt);
                                 }
+    
                            
                             }
                 });
             }
+            
+              
         </script>
         <div class="w3-top">
             <div class="w3-bar w3-white w3-card" id="myNavbar">
@@ -74,11 +79,12 @@
             </div>
         </div>
 
-        <div id="title"> New Order : </div>
+        <div id="title"> Update Order number : ${order.ordernumber}</div>
 
         <div id="#home">
 
             <form method="post">
+                <input type="hidden" name="action" value="update" readonly>
                 <div class="col-2">
                     <label>
                         Customer:
@@ -89,7 +95,7 @@
                 <div class="col-2">
                     <label>
                         Order Number:
-                        <input type="text" name="ordernumber_input" required tabindex="2">
+                        <input type="text" type="number" name="ordernumber" required tabindex="2" value="${order.ordernumber}" readonly>
                     </label>
                 </div>
 
@@ -97,22 +103,22 @@
                 <div class="col-3">
                     <label>
                         Quantity
-                        <input type="number" required placeholder="Min: 1, Max: 100 " min="1" max="100" id="quantity" name="quantity" tabindex="3">
+                        <input type="number" value="${order.quantity}" required placeholder="Min: 1, Max: 100 " min="1" max="100" id="quantity" name="quantity" tabindex="3">
                     </label>
                 </div>
                 <div class="col-3">
                     <label>
                         Shipping Cost
-                        <input type="number" step="0.01" required name="shipping_cost" tabindex="4">
+                        <input type="number" step="0.01" required name="shipping_cost" tabindex="4" value="${order.shippingcost}">
                     </label>
                 </div>
                 <div class="col-i">
                     <label>
                         Products:
                         
-                        <input id="productCat" name="productCat" type="hidden" value="">
+                        <input id="productCat" name="productCat" required type="hidden" value="${order.product.code}">
                          <select id ="product_Cat_selector" name='product_Cat_selector' tabindex="5" onchange="getProduct()">
-                             <option selected disabled>Choose Product Cat here</option>
+                             <option selected disabled>${order.product.code}</option>
                             <c:forEach var="pro" items="${productCodeslist}">
                                 <option value="${pro}">
                                     ${pro}
@@ -120,13 +126,13 @@
                             </c:forEach>
                         </select>
                         
-                         <input id="product" name="product" type="hidden" value="">
-                        <select id ="product_selector" name='productlist' tabindex="5" onchange="
+                         <input id="productid" required name="productid" type="hidden" value="${order.product.productid}">
+                         <select id ="product_selector" required name='productlist' tabindex="5" onchange="
                                 var e = document.getElementById('product_selector');
-                                document.getElementById('product').value = e.options[e.selectedIndex].value;
+                                document.getElementById('productid').value = e.options[e.selectedIndex].value;
                                     console.log(e.options[e.selectedIndex].value);
                                 ">
-                            <option selected disabled>Choose Product Cat First</option>
+                            <option selected disabled>${order.product.description}</option>
 
                         </select>
                         
@@ -137,27 +143,27 @@
                 <div class="col-4">
                     <label>
                         Sale Date:
-                        <input required name="sale_date" type="date" tabindex="6">
+                        <input required name="sale_date" type="date" tabindex="6" value="${order.saledate}">
 
                     </label>
                 </div>
                 <div class="col-4">
                     <label>
                         Shipping Date:
-                        <input required name="shipping_date" type="date" tabindex="7">
+                        <input required name="shipping_date" type="date" tabindex="7" value="${order.shippingdate}">
 
                     </label>
                 </div>
                 <div class="col-4">
                     <label>
                         Freight Company:
-                        <input name="freight" required type="text" tabindex="8">
+                        <input name="freight" required type="text" tabindex="8" value="${order.freight}">
 
                     </label>
                 </div>
 
                 <div class="col-submit">
-                    <button id="addorder_but" type="submit" class="submitbtn">Place order</button>
+                    <button id="addorder_but" type="submit" class="submitbtn">Update order</button>
                 </div>
 
             </form>

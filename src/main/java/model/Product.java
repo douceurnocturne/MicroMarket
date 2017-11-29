@@ -17,15 +17,17 @@ public class Product {
     private final boolean available;
     private final String manufacturer;
     private final String description;
+    private final String code;
 
     public Product(int productID, float price, int availableQuantity, boolean available,
-            String description, String manufacturers) {
+            String description, String manufacturers, String code) {
         this.productid = productID;
         this.price = price;
         this.instockquantity = availableQuantity;
         this.available = available;
         this.manufacturer = manufacturers;
         this.description = description;
+        this.code=code;
     }
 
     public int getProductid() {
@@ -34,6 +36,9 @@ public class Product {
 
     public String getDescription() {
         return this.description;
+    }
+    public String getCode() {
+        return this.code;
     }
 
     public int getInstockquantity() {

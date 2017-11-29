@@ -11,15 +11,96 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        
+        <script	src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+        <!-- On charge le moteur de template mustache https://mustache.github.io/ -->
+       <!--  <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/0.8.1/mustache.min.js"></script> -->
+       <script src="http://builds.handlebarsjs.com.s3.amazonaws.com/handlebars-v4.0.11.js"></script>
+
         <link rel="stylesheet" href="css/W3Style.css">
         <link rel="stylesheet" href="css/CustomerStyle.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        
+
         <title>Customer Page</title>
     </head>
     <body>
+
+        <script>
+            $(document).ready(// Exécuté à la fin du chargement de la page
+                    function () {
+                        // On montre la liste des codes
+                        showCodes();
+                    }
+            );
+
+            function showError(xhr, status, message) {
+                alert(JSON.parse(xhr.responseText).message);
+            }
+
+            function showCodes() {
+                // On fait un appel AJAX pour chercher les codes
+                $.ajax({
+                    url: "ShowCustomerOrders",
+                    dataType: "json",
+                    error: showError,
+                    success: // La fonction qui traite les résultats
+                            function (result) {
+                                var source = $("#orderTemplate").html(); 
+                                var template = Handlebars.compile(source);
+                                $('#home').html(template(result));
+                            }
+                });
+            }
+
+            function deleteOrder(ordernumber) {
+              console.log("test");
+              $.ajax({
+                    type: "POST",
+                    url: "DeleteOrder",
+                    data: {"ordernumber":ordernumber},
+                    success: showCodes,
+                    error: showError
+                  });
+                
+            };
+            
+            function updateOrder(ordernumber) {
+              console.log(ordernumber);
+                
+            };
+        </script>
+        <script type="text/x-handlebars-template" id="orderTemplate">
+            
+            <TABLE border="1">
+            <tr>
+            <th>Order Number</th>
+            <th>Produit description</th>
+            <th>Quantite</th>
+            <th>Shipping cost</th>
+            <th>Sales date</th>
+            <th>Shipping date</th>
+            <th>Freight company</th>
+            <th>Action</th>
+            </tr>
+                 {{#orders}}
+                <TR>
+                    <TD>{{ordernumber}}</TD><TD>{{product.description}}</TD>                    
+                    <TD>{{quantity}}</TD><TD>{{shippingcost}}</TD>
+                    <TD>{{saledate}}</TD><TD>{{shippingdate}}</TD>
+                    <TD>{{freight}}</TD>
+                     
+                    <TD><form action="UpdateOrder" method="post">
+                         <input type="hidden" name="ordernumber" value="{{ordernumber}}" />
+                         <input type="hidden" name="action" value="get" />
+                         <input type="submit" value="Update" />
+                         
+                        </form>
+                        <button onclick="deleteOrder({{ordernumber}})">Delete</button>
+                    </TD>
+                </TR>
+                {{/orders}}
+            </TABLE>
+            </script>
 
         <div class="w3-top">
             <div class="w3-bar w3-white w3-card" id="myNavbar">
@@ -43,28 +124,9 @@
 
             </div>
         </div>
-        <div style="padding-top:100px; padding-left: 48px; font-size: 28px;"> Welcome back ${user.name} </div>
+        <div id="customerorders" style="padding-top:100px; padding-left: 48px; font-size: 28px;"> Welcome back ${user.name} </div>
         <div id="home">
-
-            <table border="1">
-
-                <tr><th>Order Number</th><th>Produit description</th>
-                    <th>Quantite</th><th>Shipping cost</th>
-                    <th>Sales date</th><th>Freight company</th>
-                    <th>Action</th>
-                </tr>
-
-                <c:forEach var="record" items="${orders}">
-
-                    <tr><td>${record.ordernumber}</td><td>${record.product.description}</td>
-                        <td>${record.quantity}</td><td>${record.shippingcost}</td>
-                        <td>${record.date}</td><td>${record.freight}</td>
-                        <td><button name="${record.ordernumber}" method="Post" type="button" >Update</button>
-                            <button name="${record.ordernumber}" method="Post" type="button" >Delete</button></td>
-                    </tr>
-                </c:forEach>
-
-            </table>
+            
         </div>
     </body>
 </html>

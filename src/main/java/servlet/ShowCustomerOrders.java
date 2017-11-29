@@ -5,13 +5,10 @@
  */
 package servlet;
 
+import com.google.gson.Gson;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.io.PrintWriter;
+import java.util.Properties;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,17 +16,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Customer;
 import model.DAO;
-import model.DAOException;
 import model.DataSourceFactory;
-import model.Order;
-import model.Product;
 
 /**
  *
  * @author Ehsan
  */
-@WebServlet(name = "AddOrder", urlPatterns = {"/AddOrder"})
-public class AddOrder extends HttpServlet {
+@WebServlet(name = "ShowCustomerOrders", urlPatterns = {"/ShowCustomerOrders"})
+public class ShowCustomerOrders extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -45,41 +39,21 @@ public class AddOrder extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
 
         DAO dao = new DAO(DataSourceFactory.getDataSource(DataSourceFactory.DriverType.embedded));
-        if (request.getParameter("ordernumber_input") != null) {
-            try {
 
-                DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                int ordernumber = Integer.parseInt(request.getParameter("ordernumber_input"));
-                int quantity = Integer.parseInt(request.getParameter("quantity"));
-                float shipping_cost = Float.parseFloat(request.getParameter("shipping_cost"));
-                java.sql.Date sale_date = new java.sql.Date(format.parse(request.getParameter("sale_date")).getTime());
-                java.sql.Date shipping_date = new java.sql.Date(format.parse(request.getParameter("shipping_date")).getTime());
-                String freight = request.getParameter("freight");
-                Customer c;
-                c = (Customer) request.getSession().getAttribute("user");
-                int productid = Integer.parseInt(request.getParameter("product"));
-                Product p =dao.getProductByid(productid);
+        Properties resultat = new Properties();
 
-                Order order = new Order(ordernumber, c, p, quantity, shipping_cost,
-                        sale_date,shipping_date, freight);
-                
-                int res = dao.AddOrder(order);
-                if (res == 1) {
-                    request.setAttribute("message", "Got it, order Number:"+ordernumber);
-                }
+        Customer customer = (Customer) request.getSession().getAttribute("user");
+        resultat.put("orders", dao.GetOrderByCustomer(customer));
 
-            } catch (ParseException ex) {
-                Logger.getLogger(AddOrder.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (DAOException ex) {
-                request.setAttribute("message", "Sorry your order couldn't be placed :"+ex.getMessage());
-                Logger.getLogger(AddOrder.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
+        try (PrintWriter out = response.getWriter()) {
+            // On spécifie que la servlet va générer du JSON
+            response.setContentType("application/json;charset=UTF-8");
+            // Générer du JSON
+             Gson gson = new Gson();
+            // setPrettyPrinting pour que le JSON généré soit plus lisible
+            //Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            out.println(gson.toJson(resultat));
         }
-
-        List<String> result = dao.getProductCodes();
-        request.setAttribute("productCodeslist", result);
-        request.getRequestDispatcher("AddOrder.jsp").forward(request, response);
 
     }
 

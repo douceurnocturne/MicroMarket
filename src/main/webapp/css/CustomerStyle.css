@@ -11,6 +11,10 @@ body, html {
 #home {
     padding:0px 48px;
 }
+
+#codesTemplate {
+    padding:0px 48px;
+}
 /* Full height image header */
 .bgimg-1 {
     background-position: center;
