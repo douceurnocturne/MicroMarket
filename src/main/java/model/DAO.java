@@ -203,9 +203,9 @@ public class DAO {
         return result;
     }
 
-    public Map<String, Float> GetBenefictsByProductCodesAndDate(Date startDate, Date endDate) {
+    public Map<String, Float> GetBenefitsByProductCodesAndDate(Date startDate, Date endDate) {
 
-        Map<String, Float> result = new HashMap<String, Float>();
+        Map<String, Float> result = new HashMap<>();
 
         String sql = "SELECT PRODUCT_CODE.DESCRIPTION, "
                 + "SUM(PRODUCT.PURCHASE_COST*PURCHASE_ORDER.QUANTITY) "
@@ -221,10 +221,9 @@ public class DAO {
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
 
-                    float earning = rs.getFloat("Earnings");
+                    float earning = rs.getFloat("EARNINGS");
                     String desc = rs.getString("DESCRIPTION");
                     result.put(desc, earning);
-                    
 
                 }
             }
@@ -236,14 +235,67 @@ public class DAO {
         return result;
     }
 
-    public float GetBenefictsByState(String state) {
-        float result = 0;
+    public Map<String, Float> GetBenefitsByState(Date startDate, Date endDate) {
+
+        Map<String, Float> result = new HashMap<>();
+
+        String sql = "SELECT CUSTOMER.STATE, "
+                + "SUM(PURCHASE_ORDER.QUANTITY*PRODUCT.PURCHASE_COST) AS earnings "
+                + "FROM APP.CUSTOMER,APP.PURCHASE_ORDER, APP.PRODUCT "
+                + "WHERE PURCHASE_ORDER.CUSTOMER_ID=CUSTOMER.CUSTOMER_ID "
+                + "AND PRODUCT.PRODUCT_ID=PURCHASE_ORDER.PRODUCT_ID "
+                + "AND PURCHASE_ORDER.SALES_DATE BETWEEN ? AND ? "
+                + "GROUP BY CUSTOMER.STATE";
+        try (Connection connection = myDataSource.getConnection();
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setDate(1, startDate);
+            stmt.setDate(2, endDate);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+
+                    float earning = rs.getFloat("EARNINGS");
+                    String desc = rs.getString("STATE");
+                    result.put(desc, earning);
+
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         return result;
     }
 
-    public float GetBenefictsByCustomerAndDate(Customer custmer, Date startDate, Date endDate) {
-        float result = 0;
+    public Map<String, Float> GetBenefitsByCustomerAndDate(Date startDate, Date endDate) {
+
+        Map<String, Float> result = new HashMap<>();
+
+        String sql = "SELECT CUSTOMER.NAME, "
+                + "SUM(PRODUCT.PURCHASE_COST*PURCHASE_ORDER.QUANTITY) "
+                + "AS EARNINGS FROM "
+                + "APP.PURCHASE_ORDER, APP.CUSTOMER, APP.PRODUCT "
+                + "WHERE CUSTOMER.CUSTOMER_ID=PURCHASE_ORDER.CUSTOMER_ID "
+                + "AND PURCHASE_ORDER.PRODUCT_ID=PRODUCT.PRODUCT_ID "
+                + "AND PURCHASE_ORDER.SALES_DATE BETWEEN ? AND ? "
+                + "GROUP BY CUSTOMER.NAME";
+        try (Connection connection = myDataSource.getConnection();
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setDate(1, startDate);
+            stmt.setDate(2, endDate);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+
+                    float earning = rs.getFloat("EARNINGS");
+                    String desc = rs.getString("NAME");
+                    result.put(desc, earning);
+
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         return result;
     }

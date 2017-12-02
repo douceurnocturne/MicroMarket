@@ -40,14 +40,14 @@
                 alert(JSON.parse(xhr.responseText).message);
             }    
             
-        function getEarningsProdCode(){
+        function getEarningsProdCode(code){
           var sdate = document.getElementById('start_date').value;
           var edate = document.getElementById('end_date').value;
           console.log(sdate);
           console.log(edate);
           $.ajax({
                     url: "GraphicsController",
-                    data: {"graphic":"codes","start_date":sdate,"end_date":edate},
+                    data: {"graphic":code,"start_date":sdate,"end_date":edate},
                     dataType: "json",
                     error: showError,
                     success: // La fonction qui traite les résultats
@@ -74,15 +74,27 @@
                                         }; */
         
                                     var options = {
-                                    title: 'Earnings By Products Codes',
+                                    title: 'Earnings By '+code,
                                     
                                     vAxis: {
                                       title: 'Earnings scale'
                                     }
                                   };
-                                        
-                                        
-                                    var chart = new google.visualization.ColumnChart(document.getElementById('graphics'));
+                                      var chart;  
+                                   switch(code) {
+                                        case "codes":
+                                            chart = new google.visualization.ColumnChart(document.getElementById('graphics'));
+                                            break;
+                                        case "geo":
+                                            chart = new google.visualization.PieChart(document.getElementById('graphics'));
+                                            break;
+                                        case "client":
+                                            chart = new google.visualization.BarChart(document.getElementById('graphics'));
+                                            break;
+                                     
+                                    }   
+                                    
+                                
                                     chart.draw(data, options);
                            
                                 
@@ -105,9 +117,9 @@
                 </div>
                 
                 <div class="w3-left w3-hide-small">
-                    <a href="#work" class="w3-bar-item w3-button"><i class="fa fa-th"></i> Earnings By Zone</a>
-                    <a href="#team" class="w3-bar-item w3-button"><i class="fa fa-user"></i> Earnings By Customer</a>
-                    <a href="#" onclick="getEarningsProdCode()" class="w3-bar-item w3-button"><i class="fa fa-usd"></i>  Earnings By Product Cat</a>
+                    <a href="#" onclick="getEarningsProdCode('geo')" class="w3-bar-item w3-button"><i class="fa fa-th"></i> Earnings By Zone</a>
+                    <a href="#" onclick="getEarningsProdCode('client')" class="w3-bar-item w3-button"><i class="fa fa-user"></i> Earnings By Customer</a>
+                    <a href="#" onclick="getEarningsProdCode('codes')" class="w3-bar-item w3-button"><i class="fa fa-usd"></i>  Earnings By Product Cat</a>
 
                 </div>
                     <div class="w3-right w3-hide-small">

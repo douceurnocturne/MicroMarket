@@ -63,7 +63,19 @@ public class GraphicsController extends HttpServlet {
                 
                 try (PrintWriter out = response.getWriter()) {
                     Gson gson = new GsonBuilder().setPrettyPrinting().create();
-                    out.println(gson.toJson(dao.GetBenefictsByProductCodesAndDate(start_date, end_date)));
+                    out.println(gson.toJson(dao.GetBenefitsByProductCodesAndDate(start_date, end_date)));
+                }
+                break;
+            case "geo":
+                try (PrintWriter out = response.getWriter()) {
+                    Gson gson = new GsonBuilder().setPrettyPrinting().create();
+                    out.println(gson.toJson(dao.GetBenefitsByState(start_date, end_date)));
+                }
+                break;
+            case "client":
+                try (PrintWriter out = response.getWriter()) {
+                    Gson gson = new GsonBuilder().setPrettyPrinting().create();
+                    out.println(gson.toJson(dao.GetBenefitsByCustomerAndDate(start_date, end_date)));
                 }
                 break;
         }
