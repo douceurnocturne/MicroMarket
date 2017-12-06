@@ -44,7 +44,7 @@ public class GraphicsController extends HttpServlet {
 
         java.sql.Date start_date = null;
         java.sql.Date end_date = null;
-        DAO dao = new DAO(DataSourceFactory.getDataSource(DataSourceFactory.DriverType.embedded));
+        DAO dao = new DAO(DataSourceFactory.getDataSource(DataSourceFactory.DriverType.server));
         String graphic_type = request.getParameter("graphic");
         graphic_type = (graphic_type == null) ? "" : graphic_type;
         String sdate = request.getParameter("start_date");

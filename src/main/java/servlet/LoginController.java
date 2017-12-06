@@ -52,7 +52,7 @@ public class LoginController extends HttpServlet {
         } else {
             try {
                 int id = 0;
-                DAO dao = new DAO(DataSourceFactory.getDataSource(DataSourceFactory.DriverType.embedded));
+                DAO dao = new DAO(DataSourceFactory.getDataSource(DataSourceFactory.DriverType.server));
                 try {
                     id = Integer.parseInt(pass);
                 } catch (NumberFormatException ex) {

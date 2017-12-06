@@ -64,7 +64,7 @@
                 </div>
 
                 <div class="w3-left w3-hide-small">
-                    <a href="${pageContext.request.contextPath}/OrderByCustomerController" class="w3-bar-item w3-button"><i class="fa fa-th"></i> Go Back</a>
+                    <a href="${pageContext.request.contextPath}/customer.jsp" class="w3-bar-item w3-button"><i class="fa fa-th"></i> Go Back</a>
                     <a href="#team" class="w3-bar-item w3-button"><i class="fa fa-user"></i> TEAM</a>
                     <a href="#pricing" class="w3-bar-item w3-button"><i class="fa fa-usd"></i> PRICING</a>
                     <a href="#contact" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i> CONTACT</a>

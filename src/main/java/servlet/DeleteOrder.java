@@ -37,7 +37,7 @@ public class DeleteOrder extends HttpServlet {
             throws ServletException, IOException {
 
         response.setContentType("text/html;charset=UTF-8");
-        DAO dao = new DAO(DataSourceFactory.getDataSource(DataSourceFactory.DriverType.embedded));
+        DAO dao = new DAO(DataSourceFactory.getDataSource(DataSourceFactory.DriverType.server));
         String message;
         String orderid = request.getParameter("ordernumber");
         try {

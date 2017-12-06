@@ -19,12 +19,17 @@
         </init-param>
     </servlet>
     
+    <filter>
+        <filter-name>ProtectedPagesFilter</filter-name>
+        <filter-class>filters.ProtectedPagesFilter</filter-class>
+    </filter>
+    
     <listener>
-        <listener-class>servlet.SessionListener</listener-class>
+        <listener-class>servlet.ApplicationListener</listener-class>
     </listener>
     <session-config>
         <session-timeout>
-            30
+            2
         </session-timeout>
     </session-config>
     <welcome-file-list>
