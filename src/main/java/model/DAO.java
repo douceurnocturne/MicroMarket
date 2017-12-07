@@ -124,7 +124,7 @@ public class DAO {
         }
         return result;
     }
-    
+
     public List<String> getProductCodes() {
         List<String> result = new LinkedList<>();
         String sql = "SELECT distinct PROD_CODE FROM PRODUCT_CODE";
@@ -138,6 +138,34 @@ public class DAO {
             }
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
+            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+    }
+
+    public List<Customer> GetCustomerList() {
+        List<Customer> result = new LinkedList<>();
+        String sql = "SELECT * FROM CUSTOMER";
+        try (Connection connection = myDataSource.getConnection();
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+
+                    int customerID = rs.getInt("CUSTOMER_ID");
+                    String name = rs.getString("NAME");
+                    String address1 = rs.getString("ADDRESSLINE1");
+                    String state = rs.getString("STATE");
+                    String city = rs.getString("CITY");
+                    String email = rs.getString("EMAIL");
+
+                    Customer customer = new Customer(customerID, name, address1,
+                            state, city, email);
+
+                    result.add(customer);
+                }
+            }
+        } catch (SQLException ex) {
             Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return result;
