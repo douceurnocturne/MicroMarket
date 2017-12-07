@@ -126,7 +126,8 @@
                         <a class="w3-bar-item w3-button"> <i class="fa fa-calendar"> </i> Start Date :
                      <input  id="start_date" required name="start_date" type="date"></a>                  
                     <a class="w3-bar-item w3-button"> <i class="fa fa-calendar"> </i> End Date : 
-                     <input id="end_date" required name="end_date" type="date"></a>              
+                     <input id="end_date" required name="end_date" type="date"></a>  
+                                         <a href="#" class="w3-bar-item w3-button"><i class="fa fa-user"></i> ${applicationScope.numberConnected}</a>
                     </div>
             </div>
         </div>

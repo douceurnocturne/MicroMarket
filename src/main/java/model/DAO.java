@@ -85,7 +85,7 @@ public class DAO {
     public int DeleteOrder(int ordernumber) throws DAOException {
         int resualt = 0;
 
-        String sql = "DELETE FROM APP.PURCHASE_ORDER WHERE ORDER_NUM=?";
+        String sql = "DELETE FROM PURCHASE_ORDER WHERE ORDER_NUM=?";
         try (Connection connection = myDataSource.getConnection();
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, ordernumber);
@@ -101,7 +101,7 @@ public class DAO {
     public Customer Login(String user, int pass) throws DAOException {
         Customer result = null;
 
-        String sql = "SELECT * FROM APP.CUSTOMER WHERE EMAIL=? AND CUSTOMER_ID=?";
+        String sql = "SELECT * FROM CUSTOMER WHERE EMAIL=? AND CUSTOMER_ID=?";
         try (Connection connection = myDataSource.getConnection();
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
 
@@ -124,37 +124,10 @@ public class DAO {
         }
         return result;
     }
-
-    public List<Customer> GetCustomerList() {
-        List<Customer> result = new LinkedList<>();
-        String sql = "SELECT * FROM APP.CUSTOMER";
-        try (Connection connection = myDataSource.getConnection();
-                PreparedStatement stmt = connection.prepareStatement(sql)) {
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-
-                    int customerID = rs.getInt("CUSTOMER_ID");
-                    String name = rs.getString("NAME");
-                    String address1 = rs.getString("ADDRESSLINE1");
-                    String state = rs.getString("STATE");
-                    String city = rs.getString("CITY");
-                    String email = rs.getString("EMAIL");
-
-                    Customer customer = new Customer(customerID, name, address1,
-                            state, city, email);
-
-                    result.add(customer);
-                }
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return result;
-    }
-
+    
     public List<String> getProductCodes() {
         List<String> result = new LinkedList<>();
-        String sql = "SELECT distinct PROD_CODE FROM APP.PRODUCT_CODE";
+        String sql = "SELECT distinct PROD_CODE FROM PRODUCT_CODE";
         try (Connection connection = myDataSource.getConnection();
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
             try (ResultSet rs = stmt.executeQuery()) {
@@ -173,10 +146,10 @@ public class DAO {
     public List<Product> getProductList(String cat) {
         List<Product> result = new LinkedList<>();
         String sql = "SELECT distinct PRODUCT_ID,PURCHASE_COST,QUANTITY_ON_HAND,"
-                + " AVAILABLE,DESCRIPTION,APP.MANUFACTURER.NAME AS \"MANUFACTURER_Name\" "
-                + "FROM APP.PRODUCT, APP.MANUFACTURER WHERE "
-                + "APP.PRODUCT.PRODUCT_CODE=? AND "
-                + "APP.MANUFACTURER.MANUFACTURER_ID =APP.PRODUCT.MANUFACTURER_ID";
+                + " AVAILABLE,DESCRIPTION,MANUFACTURER.NAME AS \"MANUFACTURER_Name\" "
+                + "FROM PRODUCT, MANUFACTURER WHERE "
+                + "PRODUCT.PRODUCT_CODE=? AND "
+                + "MANUFACTURER.MANUFACTURER_ID =PRODUCT.MANUFACTURER_ID";
         try (Connection connection = myDataSource.getConnection();
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, cat);
@@ -209,7 +182,7 @@ public class DAO {
 
         String sql = "SELECT PRODUCT_CODE.DESCRIPTION, "
                 + "SUM(PRODUCT.PURCHASE_COST*PURCHASE_ORDER.QUANTITY) "
-                + "AS Earnings FROM APP.PRODUCT,APP.PURCHASE_ORDER,PRODUCT_CODE "
+                + "AS Earnings FROM PRODUCT,PURCHASE_ORDER,PRODUCT_CODE "
                 + "WHERE PRODUCT.PRODUCT_ID=PURCHASE_ORDER.PRODUCT_ID "
                 + "AND PRODUCT_CODE.PROD_CODE=PRODUCT.PRODUCT_CODE "
                 + "AND PURCHASE_ORDER.SALES_DATE BETWEEN ? AND ? "
@@ -241,7 +214,7 @@ public class DAO {
 
         String sql = "SELECT CUSTOMER.STATE, "
                 + "SUM(PURCHASE_ORDER.QUANTITY*PRODUCT.PURCHASE_COST) AS earnings "
-                + "FROM APP.CUSTOMER,APP.PURCHASE_ORDER, APP.PRODUCT "
+                + "FROM CUSTOMER,PURCHASE_ORDER, PRODUCT "
                 + "WHERE PURCHASE_ORDER.CUSTOMER_ID=CUSTOMER.CUSTOMER_ID "
                 + "AND PRODUCT.PRODUCT_ID=PURCHASE_ORDER.PRODUCT_ID "
                 + "AND PURCHASE_ORDER.SALES_DATE BETWEEN ? AND ? "
@@ -274,7 +247,7 @@ public class DAO {
         String sql = "SELECT CUSTOMER.NAME, "
                 + "SUM(PRODUCT.PURCHASE_COST*PURCHASE_ORDER.QUANTITY) "
                 + "AS EARNINGS FROM "
-                + "APP.PURCHASE_ORDER, APP.CUSTOMER, APP.PRODUCT "
+                + "PURCHASE_ORDER, CUSTOMER, PRODUCT "
                 + "WHERE CUSTOMER.CUSTOMER_ID=PURCHASE_ORDER.CUSTOMER_ID "
                 + "AND PURCHASE_ORDER.PRODUCT_ID=PRODUCT.PRODUCT_ID "
                 + "AND PURCHASE_ORDER.SALES_DATE BETWEEN ? AND ? "
@@ -302,14 +275,14 @@ public class DAO {
 
     public Product getProductByid(int productid) throws DAOException {
         Product product = null;
-        String sql = "SELECT APP.PRODUCT.PRODUCT_ID, APP.PRODUCT.PRODUCT_CODE, "
-                + "APP.PRODUCT.PURCHASE_COST, APP.PRODUCT.QUANTITY_ON_HAND, "
-                + "APP.PRODUCT.AVAILABLE,APP.PRODUCT.DESCRIPTION, "
-                + "APP.PRODUCT.PRODUCT_CODE, APP.MANUFACTURER.NAME AS MANAME,"
-                + "APP.PRODUCT.MANUFACTURER_ID"
-                + " FROM APP.MANUFACTURER,APP.PRODUCT WHERE "
-                + "APP.MANUFACTURER.MANUFACTURER_ID=APP.PRODUCT.MANUFACTURER_ID"
-                + " AND APP.PRODUCT.PRODUCT_ID=?";
+        String sql = "SELECT PRODUCT.PRODUCT_ID, PRODUCT.PRODUCT_CODE, "
+                + "PRODUCT.PURCHASE_COST, PRODUCT.QUANTITY_ON_HAND, "
+                + "PRODUCT.AVAILABLE,PRODUCT.DESCRIPTION, "
+                + "PRODUCT.PRODUCT_CODE, MANUFACTURER.NAME AS MANAME,"
+                + "PRODUCT.MANUFACTURER_ID"
+                + " FROM MANUFACTURER,PRODUCT WHERE "
+                + "MANUFACTURER.MANUFACTURER_ID=PRODUCT.MANUFACTURER_ID"
+                + " AND PRODUCT.PRODUCT_ID=?";
         try (Connection connection = myDataSource.getConnection();
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
 
@@ -340,7 +313,7 @@ public class DAO {
     public Order getCustomerOrderByid(Customer c, int ordernumber) {
 
         Order order = null;
-        String sql = "SELECT * FROM APP.PURCHASE_ORDER WHERE ORDER_NUM = ?";
+        String sql = "SELECT * FROM PURCHASE_ORDER WHERE ORDER_NUM = ?";
         try (Connection connection = myDataSource.getConnection();
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
 
@@ -371,9 +344,9 @@ public class DAO {
 
     public List<Order> GetOrderByCustomer(Customer customer) {
         List<Order> result = new LinkedList<>();
-        String sql = "SELECT * FROM APP.PURCHASE_ORDER, APP.PRODUCT, APP.MANUFACTURER"
-                + " WHERE APP.MANUFACTURER.MANUFACTURER_ID=APP.PRODUCT.MANUFACTURER_ID"
-                + " AND APP.PURCHASE_ORDER.PRODUCT_ID=APP.PRODUCT.PRODUCT_ID "
+        String sql = "SELECT * FROM PURCHASE_ORDER, PRODUCT, MANUFACTURER"
+                + " WHERE MANUFACTURER.MANUFACTURER_ID=PRODUCT.MANUFACTURER_ID"
+                + " AND PURCHASE_ORDER.PRODUCT_ID=PRODUCT.PRODUCT_ID "
                 + "AND PURCHASE_ORDER.CUSTOMER_ID = ?";
         try (Connection connection = myDataSource.getConnection();
                 PreparedStatement stmt = connection.prepareStatement(sql)) {

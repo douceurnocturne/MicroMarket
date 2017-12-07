@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
-    
     <servlet>
         <servlet-name>LoginController</servlet-name>
         <servlet-class>servlet.LoginController</servlet-class>
@@ -18,14 +17,21 @@
             <param-value>Administrator</param-value>
         </init-param>
     </servlet>
-    
     <filter>
         <filter-name>ProtectedPagesFilter</filter-name>
         <filter-class>filters.ProtectedPagesFilter</filter-class>
     </filter>
-    
+    <filter-mapping>
+        <filter-name>ProtectedPagesFilter</filter-name>
+        <url-pattern>/AddOrder.jsp</url-pattern>
+        <url-pattern>/UpdateOrder.jsp</url-pattern>
+        <url-pattern>/admin.jsp</url-pattern>
+        <url-pattern>/customer.jsp</url-pattern>
+        <url-pattern>/errorView.jsp</url-pattern>
+    </filter-mapping>
     <listener>
-        <listener-class>servlet.ApplicationListener</listener-class>
+        <description>ApplicationListener</description>
+        <listener-class>listener.ApplicationListener</listener-class>
     </listener>
     <session-config>
         <session-timeout>

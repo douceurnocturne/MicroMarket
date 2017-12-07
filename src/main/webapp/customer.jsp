@@ -116,7 +116,7 @@
 
                 <div class="w3-left w3-hide-small">
                     <a href="${pageContext.request.contextPath}/AddOrder" class="w3-bar-item w3-button"><i class="fa fa-th"></i> New Order </a>
-                    <a href="#team" class="w3-bar-item w3-button"><i class="fa fa-user"></i> TEAM</a>
+                    <a href="#team" class="w3-bar-item w3-button"><i class="fa fa-user"></i> ${applicationScope.numberConnected}</a>
                     <a href="#pricing" class="w3-bar-item w3-button"><i class="fa fa-usd"></i> PRICING</a>
                     <a href="#contact" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i> CONTACT</a>
                     <a href="#about" class="w3-bar-item w3-button">ABOUT</a>

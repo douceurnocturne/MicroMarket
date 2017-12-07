@@ -21,6 +21,8 @@
     </head>
 
     <body>
+		
+            <div><h4>${msg}</h4></div>      
         <div class="login">
             <h1>Login</h1>
 

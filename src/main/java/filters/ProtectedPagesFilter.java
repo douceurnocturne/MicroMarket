@@ -26,12 +26,13 @@ public class ProtectedPagesFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 		throws IOException, ServletException {
 		try {
-                    System.out.println("je suis laaaa");
+                   
 			HttpSession session = ((HttpServletRequest) request).getSession(false);
 			if (session != null && session.getAttribute("user") != null) {// connecté, on traite la requête			
 				chain.doFilter(request, response);
 			} else {
 				// Pas connecté, on va vers la page de login (racine)
+                                request.setAttribute("msg", "Please login first");
 				((HttpServletResponse) response).sendRedirect(((HttpServletRequest) request).getContextPath() + "/");
 			}
 		} catch (IOException | ServletException t) {
