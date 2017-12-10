@@ -84,9 +84,12 @@ CREATE TABLE PURCHASE_ORDER (
 	PRIMARY KEY (ORDER_NUM)
 );
 
-
+INSERT INTO MICRO_MARKET (ZIP_CODE) VALUES ('test');
+INSERT INTO DISCOUNT_CODE(DISCOUNT_CODE) VALUES ('M');
+INSERT INTO MANUFACTURER VALUES(1,'name','test','test','MIAMI','FL','test','phone','fax','email','rep');
 INSERT INTO PRODUCT_CODE(PROD_CODE, DISCOUNT_CODE, DESCRIPTION) VALUES ('SW', 'M', 'Software'),('HW', 'H', 'Hardware'),('FW', 'L', 'Firmware'),('BK', 'L', 'Books'),('CB', 'N', 'Cables'),('MS', 'N', 'Misc');
-
+INSERT INTO CUSTOMER VALUES(1, 'M', 'test','Big Bill Company', '20 rue de la paix', ' ', 'MIAMI', 'FL', ' ', ' ','www.bigbill.example.com', 500);
+INSERT INTO PRODUCT VALUES(3, 1, 'SW', 5, 50, 2, 'true', 'test');
 
 ALTER TABLE CUSTOMER
 	ADD FOREIGN KEY (DISCOUNT_CODE) 

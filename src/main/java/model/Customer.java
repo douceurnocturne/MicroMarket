@@ -7,7 +7,7 @@ package model;
 
 /**
  *
- * @author Ehsan
+ * @author xzait
  */
 public class Customer {
 
@@ -31,6 +31,10 @@ public class Customer {
         return name;
     }
 
+    public int getID() {
+        return customerid;
+    }
+   
     public String getaddress() {
         return this.addressline1;
     }

@@ -34,18 +34,20 @@ public class DAO {
                 + " VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection connection = myDataSource.getConnection();
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
+            
+            if (or.getOrdernumber()>0 && or.getCustomer().getID()>0 && or.getProduct().getProductid()>0 && 
+                    or.getQuantity()>0 && or.getShippingcost()>0.0){
+                stmt.setInt(1, or.getOrdernumber());
+                stmt.setInt(2, or.getCustomer().getcustomerid());
+                stmt.setInt(3, or.getProduct().getProductid());
+                stmt.setInt(4, or.getQuantity());
+                stmt.setFloat(5, or.getShippingcost());
+                stmt.setDate(6, or.getSaledate());
+                stmt.setDate(7, or.getShippingdate());
+                stmt.setString(8, or.getFreight());
 
-            stmt.setInt(1, or.getOrdernumber());
-            stmt.setInt(2, or.getCustomer().getcustomerid());
-            stmt.setInt(3, or.getProduct().getProductid());
-            stmt.setInt(4, or.getQuantity());
-            stmt.setFloat(5, or.getShippingcost());
-            stmt.setDate(6, or.getSaledate());
-            stmt.setDate(7, or.getShippingdate());
-            stmt.setString(8, or.getFreight());
-
-            resualt = stmt.executeUpdate();
-
+                resualt = stmt.executeUpdate();
+            }
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
             Logger.getLogger("DAO").log(Level.SEVERE, null, ex);
@@ -62,7 +64,8 @@ public class DAO {
                 + "WHERE ORDER_NUM = ? ";
         try (Connection connection = myDataSource.getConnection();
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
-
+            if (or.getOrdernumber()>0 && or.getCustomer().getID()>0 && or.getProduct().getProductid()>0 && 
+                or.getQuantity()>0 && or.getShippingcost()>0.0){
             stmt.setInt(1, or.getProduct().getProductid());
             stmt.setInt(2, or.getQuantity());
             stmt.setFloat(3, or.getShippingcost());
@@ -72,7 +75,8 @@ public class DAO {
             stmt.setInt(7, or.getOrdernumber());
 
             resualt = stmt.executeUpdate();
-
+            }
+            
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
             Logger.getLogger("DAO").log(Level.SEVERE, null, ex);
@@ -190,7 +194,6 @@ public class DAO {
                     int quantity = rs.getInt("QUANTITY_ON_HAND");
                     String desc = rs.getString("DESCRIPTION");
                     String man_name = rs.getString("MANUFACTURER_Name");
-
                     Product product = new Product(product_id, price, quantity,
                             available, desc, man_name, cat);
 
