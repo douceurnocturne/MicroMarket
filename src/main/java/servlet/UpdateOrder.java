@@ -52,7 +52,7 @@ public class UpdateOrder extends HttpServlet {
         Order order;
         String action = request.getParameter("action");
         String ornumber = request.getParameter("ordernumber");
-        action = (action == null) ? "" : action; // Pour le switch qui n'aime pas les null
+        action = (action == null) ? "" : action;
         c = (Customer) request.getSession().getAttribute("user");
         List<String> result = dao.getProductCodes();
         request.setAttribute("productCodeslist", result);
@@ -87,9 +87,9 @@ public class UpdateOrder extends HttpServlet {
                     }
             }
         } catch (NumberFormatException ex) {
-            message = ex.getMessage();
+            message = "We are sorry there was a probleme with the order: "+ex.getMessage();
         } catch (DAOException ex) {
-            message = ex.getMessage();
+            message = "We are sorry there was a probleme with the order: "+ex.getMessage();
             Logger.getLogger(UpdateOrder.class.getName()).log(Level.SEVERE, null, ex);
         }
 

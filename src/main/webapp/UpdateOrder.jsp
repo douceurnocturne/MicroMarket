@@ -12,7 +12,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="css/W3Style.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="css/AddOrderStyle.css"> 
@@ -62,18 +62,15 @@
                 <div class="w3-dropdown-hover w3-hide-small w3-right">
                     <button class="w3-button"><i class="fa fa-user"></i>   ${user.name}</button>     
                     <div class="w3-dropdown-content w3-card-4 w3-bar-block" style="width:300px">      
-                        <a href="#" class="w3-bar-item w3-button">blablaa</a>
-                        <a href="#" class="w3-bar-item w3-button">do blabla</a>
-                        <a href="${pageContext.request.contextPath}/LogoutController" class="w3-bar-item w3-button"><i class="fa fa-sign-out" aria-hidden="true"></i> Signeout</a>
+                        <a href="${pageContext.request.contextPath}/LoginController?act=out" class="w3-bar-item w3-button"><i class="fa fa-sign-out" aria-hidden="true"></i> Signeout</a>
                     </div>
                 </div>
 
                 <div class="w3-left w3-hide-small">
                     <a href="${pageContext.request.contextPath}/customer.jsp" class="w3-bar-item w3-button"><i class="fa fa-th"></i> Go Back</a>
-                    <a href="#team" class="w3-bar-item w3-button"><i class="fa fa-user"></i> TEAM</a>
+                    <a href="#team" class="w3-bar-item w3-button"><i class="fa fa-user" title="Connected Users"></i> ${applicationScope.numberConnected}</a>
                     <a href="#pricing" class="w3-bar-item w3-button"><i class="fa fa-usd"></i> PRICING</a>
-                    <a href="#contact" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i> CONTACT</a>
-                    <a href="#about" class="w3-bar-item w3-button">ABOUT</a>
+                    <a href="${pageContext.request.contextPath}/contact.jsp" class="w3-bar-item w3-button">Contact us</a>
                 </div>
 
             </div>
@@ -117,7 +114,7 @@
                         Products:
                         
                         <input id="productCat" name="productCat" required type="hidden" value="${order.product.code}">
-                         <select id ="product_Cat_selector" name='product_Cat_selector' tabindex="5" onchange="getProduct()">
+                         <select required id ="product_Cat_selector" name='product_Cat_selector' tabindex="5" onchange="getProduct()">
                              <option selected disabled>${order.product.code}</option>
                             <c:forEach var="pro" items="${productCodeslist}">
                                 <option value="${pro}">
@@ -126,7 +123,7 @@
                             </c:forEach>
                         </select>
                         
-                         <input id="productid" required name="productid" type="hidden" value="${order.product.productid}">
+                         <input id="productid" name="productid" type="hidden" value="${order.product.productid}">
                          <select id ="product_selector" required name='productlist' tabindex="5" onchange="
                                 var e = document.getElementById('product_selector');
                                 document.getElementById('productid').value = e.options[e.selectedIndex].value;

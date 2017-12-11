@@ -33,7 +33,7 @@ public class ProtectedPagesFilter implements Filter {
 			} else {
 				// Pas connecté, on va vers la page de login (racine)
                                 request.setAttribute("msg", "Please login first");
-				((HttpServletResponse) response).sendRedirect(((HttpServletRequest) request).getContextPath() + "/");
+				((HttpServletResponse) response).sendRedirect(((HttpServletRequest) request).getContextPath() + "/Login.jsp");
 			}
 		} catch (IOException | ServletException t) {
 		}

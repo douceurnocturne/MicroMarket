@@ -65,7 +65,7 @@ public class AddOrder extends HttpServlet {
                 
                 int res = dao.AddOrder(order);
                 if (res == 1) {
-                    request.setAttribute("message", "Got it, order Number:"+ordernumber);
+                    request.setAttribute("message", "Done, order Number:"+ordernumber+" has been placed");
                 }
 
             } catch (ParseException ex) {

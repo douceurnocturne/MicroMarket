@@ -27,6 +27,7 @@
             <h1>Login</h1>
 
             <form action = "LoginController" method="post">
+                <input type="hidden" name="act" value="in" />
                 <input type="text" name="user" placeholder="Username" required="required" />
                 <input type="password" name="pass" placeholder="Password" required="required" />
                 <button type="submit" class="btn btn-primary btn-block btn-large">Let me in.</button>

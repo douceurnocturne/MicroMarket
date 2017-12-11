@@ -37,53 +37,57 @@ public class LoginController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String msg = "";
         boolean isAdmin = false;
-        String user = request.getParameter("user");
-        String pass = request.getParameter("pass");
-        String login = getInitParameter("login");
-        String password = getInitParameter("pass");
-        String username = getInitParameter("userName");
-        if (user.equals(login) && pass.equals(password)) {
-           
-            isAdmin = true;
-            Customer admin = new Customer(0, username, "--", "--", "--", "--");
-            request.getSession().setAttribute("user", admin);
-        } else {
-            try {
-                int id = 0;
-                DAO dao = new DAO(DataSourceFactory.getDataSource(DataSourceFactory.DriverType.server));
-                try {
-                    id = Integer.parseInt(pass);
-                } catch (NumberFormatException ex) {
-                    throw new DAOException("Password must be numeric.");
-                }
+        String action = request.getParameter("act");
+        action = (action == null) ? "" : action;
 
-                Customer customer = dao.Login(user, id);
-                if (customer != null) {
-                    request.getSession().setAttribute("user", customer);
+        switch (action) {
+            case "out":
+                request.getSession().invalidate();
+                response.sendRedirect(request.getContextPath() + "/Login.jsp");
+                break;
 
+            case "in":
+
+                String msg = "";
+                String user = request.getParameter("user");
+                String pass = request.getParameter("pass");
+                String adminUser = getInitParameter("login");
+                String adminPassword = getInitParameter("pass");
+                String adminName = getInitParameter("userName");
+                if (user.equals(adminUser) && pass.equals(adminPassword)) {
+
+                    isAdmin = true;
+                    Customer admin = new Customer(0, adminName, "--", "--", "--", "--");
+                    request.getSession().setAttribute("user", admin);
+                    request.getRequestDispatcher("admin.jsp").forward(request, response);
                 } else {
-                    throw new DAOException("Your account or password is incorrect.");
+                    try {
+                        int id = 0;
+                        DAO dao = new DAO(DataSourceFactory.getDataSource(DataSourceFactory.DriverType.server));
+                        try {
+                            id = Integer.parseInt(pass);
+                        } catch (NumberFormatException ex) {
+                            throw new DAOException("Password must be numeric.");
+                        }
+
+                        Customer customer = dao.Login(user, id);
+                        if (customer != null) {
+                            request.getSession().setAttribute("user", customer);
+                            response.sendRedirect(request.getContextPath() + "/customer.jsp");
+
+                        } else {
+                            throw new DAOException("Your account or password is incorrect.");
+                        }
+
+                    } catch (DAOException | IllegalStateException ex) {
+                        msg = ex.getMessage();
+                        request.setAttribute("message", msg);
+                        request.getRequestDispatcher("errorView.jsp").forward(request, response);
+                        //Logger.getLogger("LoginController").log(Level.SEVERE, "Action en erreur", ex);
+
+                    }
                 }
-
-            } catch (DAOException ex) {
-                msg = ex.getMessage();
-                request.setAttribute("message", msg);
-                request.getRequestDispatcher("errorView.jsp").forward(request, response);
-                Logger.getLogger("LoginController").log(Level.SEVERE, "Action en erreur", ex);
-
-            }
-        }
-
-        if (isAdmin) {
-            //Forward to admin jsp
-            request.getRequestDispatcher("admin.jsp").forward(request, response);
-        } else {
-            //Forward to client jsp
-            response.sendRedirect(request.getContextPath() + "/customer.jsp");
-
-            //request.getRequestDispatcher("customer.jsp").forward(request, response);
         }
 
     }

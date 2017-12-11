@@ -12,8 +12,6 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <script	src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-        <!-- On charge le moteur de template mustache https://mustache.github.io/ -->
-       <!--  <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/0.8.1/mustache.min.js"></script> -->
        <script src="http://builds.handlebarsjs.com.s3.amazonaws.com/handlebars-v4.0.11.js"></script>
 
         <link rel="stylesheet" href="css/W3Style.css">
@@ -53,7 +51,6 @@
             }
 
             function deleteOrder(ordernumber) {
-              console.log("test");
               $.ajax({
                     type: "POST",
                     url: "DeleteOrder",
@@ -64,10 +61,6 @@
                 
             };
             
-            function updateOrder(ordernumber) {
-              console.log(ordernumber);
-                
-            };
         </script>
         <script type="text/x-handlebars-template" id="orderTemplate">
             
@@ -108,18 +101,15 @@
                 <div class="w3-dropdown-hover w3-hide-small w3-right">
                     <button class="w3-button " title="Notifications"><i class="fa fa-user"></i>   ${user.name}</button>     
                     <div class="w3-dropdown-content w3-card-4 w3-bar-block" style="width:300px">      
-                        <a href="#" class="w3-bar-item w3-button">blablaa</a>
-                        <a href="#" class="w3-bar-item w3-button">do blabla</a>
-                        <a href="${pageContext.request.contextPath}/LogoutController" class="w3-bar-item w3-button"><i class="fa fa-sign-out" aria-hidden="true"></i> Signeout</a>
+                        <a href="${pageContext.request.contextPath}/LoginController?act=out" class="w3-bar-item w3-button"><i class="fa fa-sign-out" aria-hidden="true"></i> Signeout</a>
                     </div>
                 </div>
 
                 <div class="w3-left w3-hide-small">
                     <a href="${pageContext.request.contextPath}/AddOrder" class="w3-bar-item w3-button"><i class="fa fa-th"></i> New Order </a>
-                    <a href="#team" class="w3-bar-item w3-button"><i class="fa fa-user"></i> ${applicationScope.numberConnected}</a>
+                    <a href="#team" class="w3-bar-item w3-button"><i class="fa fa-user" title="Connected Users"></i> ${applicationScope.numberConnected}</a>
                     <a href="#pricing" class="w3-bar-item w3-button"><i class="fa fa-usd"></i> PRICING</a>
-                    <a href="#contact" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i> CONTACT</a>
-                    <a href="#about" class="w3-bar-item w3-button">ABOUT</a>
+                    <a href="${pageContext.request.contextPath}/contact.jsp" class="w3-bar-item w3-button">Contact us</a>
                 </div>
 
             </div>

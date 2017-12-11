@@ -11,7 +11,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="css/W3Style.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="css/CustomerStyle.css"> 
@@ -43,6 +43,10 @@
         function getEarningsProdCode(code){
           var sdate = document.getElementById('start_date').value;
           var edate = document.getElementById('end_date').value;
+          
+          if (sdate === "" || edate === "" ) {
+              alert("Please Pick a date");
+          } else {
           console.log(sdate);
           console.log(edate);
           $.ajax({
@@ -100,7 +104,7 @@
                                 
                             }
                 });
-        };
+        }};
         
         </script>
 
@@ -110,9 +114,7 @@
                 <div class="w3-dropdown-hover w3-hide-small w3-right">
                     <button class="w3-button" ><i class="fa fa-user"></i>   ${user.name}</button>     
                     <div class="w3-dropdown-content w3-card-4 w3-bar-block" style="width:300px">      
-                        <a href="#" class="w3-bar-item w3-button">blablaa</a>
-                        <a href="#" class="w3-bar-item w3-button">do blabla</a>
-                        <a href="${pageContext.request.contextPath}/LogoutController" class="w3-bar-item w3-button"><i class="fa fa-sign-out" aria-hidden="true"></i> Signeout</a>
+                        <a href="${pageContext.request.contextPath}/LoginController?act=out" class="w3-bar-item w3-button"><i class="fa fa-sign-out" aria-hidden="true"></i> Signeout</a>
                     </div>
                 </div>
                 
@@ -124,10 +126,10 @@
                 </div>
                     <div class="w3-right w3-hide-small">
                         <a class="w3-bar-item w3-button"> <i class="fa fa-calendar"> </i> Start Date :
-                     <input  id="start_date" required name="start_date" type="date"></a>                  
+                     <input  id="start_date" required name="start_date" type="date" value="2010-01-01"></a>                  
                     <a class="w3-bar-item w3-button"> <i class="fa fa-calendar"> </i> End Date : 
-                     <input id="end_date" required name="end_date" type="date"></a>  
-                                         <a href="#" class="w3-bar-item w3-button"><i class="fa fa-user"></i> ${applicationScope.numberConnected}</a>
+                     <input id="end_date" required name="end_date" type="date" value="2012-01-01"></a>  
+                                         <a href="#" class="w3-bar-item w3-button"><i class="fa fa-user" title="Connected Users"></i> ${applicationScope.numberConnected}</a>
                     </div>
             </div>
         </div>

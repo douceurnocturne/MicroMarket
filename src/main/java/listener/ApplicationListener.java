@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
@@ -90,15 +91,12 @@ public class ApplicationListener implements ServletContextListener, HttpSessionL
         System.out.println("sessionDestroyed - deduct one session from counter");
 		se.getSession().getServletContext().log("Destroying session");
                 int connected=0;
-                HttpSession session = se.getSession();
+                ServletContext session = se.getSession().getServletContext();
                 if (session != null ) {
                     connected = (Integer) session.getAttribute("numberConnected");
-		connected--;
-                session.getServletContext().setAttribute("numberConnected", connected);
+		connected-=1;
+                se.getSession().getServletContext().setAttribute("numberConnected", connected);
                 } 
-		// On décrémente le nombre d'utilisateurs
-		
-		// On stocke ce nombre dans le contexte d'application
 		
     }
     
