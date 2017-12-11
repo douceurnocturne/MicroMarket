@@ -17,45 +17,11 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="css/AddOrderStyle.css"> 
         <script	src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+        <script type="text/javascript" src="Js/UpdateJS.js"></script>
         <title>Update Order</title>
     </head>
     <body>
-        <script> 
-               function showError(xhr, status, message) {
-                alert(JSON.parse(xhr.responseText).message);
-            }
-            
-            function getProduct() {
-                // On fait un appel AJAX pour chercher les codes
-                var e = document.getElementById('product_Cat_selector');
-                document.getElementById('productCat').value = e.options[e.selectedIndex].value;
-                var code = document.getElementById('productCat').value;
-                $.ajax({
-                    url: "ProductByCat",
-                    data: {"cat":code},
-                    dataType: "json",
-                    error: showError,
-                    success: // La fonction qui traite les résultats
-                            function (result) {
-                                var s = document.getElementById('product_selector');
-                                document.getElementById('productid').value=result[0].productid;
-                                s.innerHTML='';
-                                var opt = document.createElement('option');
-                                var i;  
-                                for (i in result) {
-                                       var opt = document.createElement('option');
-                                        opt.value = result[i].productid;
-                                        opt.innerHTML = result[i].description;
-                                        s.appendChild(opt);
-                                }
-    
-                           
-                            }
-                });
-            }
-            
-              
-        </script>
+
         <div class="w3-top">
             <div class="w3-bar w3-white w3-card" id="myNavbar">
 

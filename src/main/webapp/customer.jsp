@@ -18,50 +18,13 @@
         <link rel="stylesheet" href="css/CustomerStyle.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script type="text/javascript" src="Js/CustomerJS.js"></script>
 
         <title>Customer Page</title>
     </head>
     <body>
 
-        <script>
-            $(document).ready(// Exécuté à la fin du chargement de la page
-                    function () {
-                        // On montre la liste des codes
-                        showCodes();
-                    }
-            );
-
-            function showError(xhr, status, message) {
-                alert(JSON.parse(xhr.responseText).message);
-            }
-
-            function showCodes() {
-                // On fait un appel AJAX pour chercher les codes
-                $.ajax({
-                    url: "ShowCustomerOrders",
-                    dataType: "json",
-                    error: showError,
-                    success: // La fonction qui traite les résultats
-                            function (result) {
-                                var source = $("#orderTemplate").html(); 
-                                var template = Handlebars.compile(source);
-                                $('#home').html(template(result));
-                            }
-                });
-            }
-
-            function deleteOrder(ordernumber) {
-              $.ajax({
-                    type: "POST",
-                    url: "DeleteOrder",
-                    data: {"ordernumber":ordernumber},
-                    success: showCodes,
-                    error: showError
-                  });
-                
-            };
-            
-        </script>
+   
         <script type="text/x-handlebars-template" id="orderTemplate">
             
             <TABLE border="1">
