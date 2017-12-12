@@ -515,7 +515,6 @@ public class DAOTest {
         Date date = new Date(2011, 05, 24);
         Order ord = new Order(3, customer, product, 5, (float) 2.00, date, date, "test");
         dao.AddOrder(ord);
-        //Customer cust = new Customer(5, "Big Bill Company", "20 rue de la paix", "FL", "MIAMI", "www.bigbill.example.com");
         Assert.assertEquals(dao.getCustomerOrderByid(customer, 3).getCustomer(), customer);
         Assert.assertEquals("test", dao.getCustomerOrderByid(customer, 3).getFreight());
         Assert.assertEquals(dao.getCustomerOrderByid(customer, 3).getSaledate(), date);
