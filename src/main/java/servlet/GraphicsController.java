@@ -44,7 +44,7 @@ public class GraphicsController extends HttpServlet {
 
         java.sql.Date start_date = null;
         java.sql.Date end_date = null;
-        DAO dao = new DAO(DataSourceFactory.getDataSource());
+        DAO dao = new DAO(DataSourceFactory.getDataSource(DataSourceFactory.DriverType.server));
         String graphic_type = request.getParameter("graphic");
         graphic_type = (graphic_type == null) ? "" : graphic_type;
         String sdate = request.getParameter("start_date");
@@ -63,7 +63,6 @@ public class GraphicsController extends HttpServlet {
                 
                 try (PrintWriter out = response.getWriter()) {
                     Gson gson = new GsonBuilder().setPrettyPrinting().create();
-                    System.out.println(dao.GetBenefitsByProductCodesAndDate(start_date, end_date));
                     out.println(gson.toJson(dao.GetBenefitsByProductCodesAndDate(start_date, end_date)));
                 }
                 break;

@@ -44,7 +44,7 @@ public class UpdateOrder extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
-        DAO dao = new DAO(DataSourceFactory.getDataSource());
+        DAO dao = new DAO(DataSourceFactory.getDataSource(DataSourceFactory.DriverType.server));
         String message = "";
         int ordernumber = 0;
         int productid = 0 ;

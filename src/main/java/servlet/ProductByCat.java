@@ -39,7 +39,7 @@ public class ProductByCat extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("application/json;charset=UTF-8");
        
-        DAO dao = new DAO(DataSourceFactory.getDataSource());
+        DAO dao = new DAO(DataSourceFactory.getDataSource(DataSourceFactory.DriverType.server));
 
         //Properties resultat = new Properties();
         

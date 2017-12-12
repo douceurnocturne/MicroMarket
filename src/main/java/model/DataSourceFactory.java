@@ -19,7 +19,7 @@ public class DataSourceFactory {
      * @return la source de données
      */
     private static final DriverType TYPE = DriverType.server;
-    public static DataSource getDataSource() {
+    public static DataSource getDataSource(DriverType type) {
         DataSource result;
 
 		switch (TYPE) {
