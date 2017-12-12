@@ -44,7 +44,7 @@ public class AddOrder extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
-        DAO dao = new DAO(DataSourceFactory.getDataSource(DataSourceFactory.DriverType.server));
+        DAO dao = new DAO(DataSourceFactory.getDataSource());
         if (request.getParameter("ordernumber_input") != null) {
             try {
 

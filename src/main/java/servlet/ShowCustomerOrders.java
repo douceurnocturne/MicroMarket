@@ -38,7 +38,7 @@ public class ShowCustomerOrders extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
-        DAO dao = new DAO(DataSourceFactory.getDataSource(DataSourceFactory.DriverType.server));
+        DAO dao = new DAO(DataSourceFactory.getDataSource());
 
         Properties resultat = new Properties();
 

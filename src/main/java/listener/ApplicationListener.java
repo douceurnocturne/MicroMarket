@@ -41,7 +41,7 @@ public class ApplicationListener implements ServletContextListener, HttpSessionL
     private boolean databaseExists() {
         boolean result = false;
 
-        DAO dao = new DAO(DataSourceFactory.getDataSource(DataSourceFactory.DriverType.server));
+        DAO dao = new DAO(DataSourceFactory.getDataSource());
         try {
             dao.getProductCodes();
             Logger.getLogger("MicroMarket").log(Level.INFO, "Database already exists");
@@ -61,7 +61,7 @@ public class ApplicationListener implements ServletContextListener, HttpSessionL
 
         Logger.getLogger("MicroMarket").log(Level.INFO, "Creating databse from SQL script");
         try {
-            Connection connection = DataSourceFactory.getDataSource(DataSourceFactory.DriverType.server).getConnection();
+            Connection connection = DataSourceFactory.getDataSource().getConnection();
             int result = ij.runScript(connection, this.getClass().getResourceAsStream("CREATE.sql"), "UTF-8", System.out, "UTF-8");
             if (result == 0) {
                 Logger.getLogger("MicroMarket").log(Level.INFO, "Database succesfully created");
