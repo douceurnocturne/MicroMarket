@@ -70,7 +70,7 @@ public class DAOTest {
         Customer customer = listCustomer.get(0);
         Product product = new Product(3, (float) 4.00, 5, true, "test", "1", "2");
         Date date = new Date(2011, 05, 24);
-        Order ord = new Order(3, customer, product, 5, (float) 2.00, date, date, "test");
+        Order ord = new Order(3, customer, product,  5, (float) 2.00, date, date, "test");
         Assert.assertEquals(1, dao.AddOrder(ord));
     }
 
@@ -81,11 +81,11 @@ public class DAOTest {
         Customer customer = listCustomer.get(0);
         Product product = new Product(3, (float) 4.00, 5, true, "test", "1", "2");
         Date date = new Date(2011, 05, 24);
-        Order ord = new Order(1, customer, product, -2, (float) 2.00, date, date, "test");
+        Order ord = new Order(1, customer, product,  -2, (float) 2.00, date, date, "test");
         Assert.assertEquals(0, dao.AddOrder(ord));
-        Order ord1 = new Order(0, customer, product, 1, (float) 2.00, date, date, "test");
+        Order ord1 = new Order(0, customer, product,  1, (float) 2.00, date, date, "test");
         Assert.assertEquals(0, dao.AddOrder(ord1));
-        Order ord2 = new Order(1, customer, product, 1, (float) -5.00, date, date, "test");
+        Order ord2 = new Order(1, customer, product,  1, (float) -5.00, date, date, "test");
         Assert.assertEquals(0, dao.AddOrder(ord2));
     }
 
@@ -95,9 +95,9 @@ public class DAOTest {
         Customer customer = listCustomer.get(0);
         Product product = new Product(3, (float) 4.00, 5, true, "test", "1", "2");
         Date date = new Date(2011, 05, 24);
-        Order ord = new Order(3, customer, product, 5, (float) 2.00, date, date, "test");
+        Order ord = new Order(3, customer, product,  5, (float) 2.00, date, date, "test");
         dao.AddOrder(ord);
-        Order ord1 = new Order(3, customer, product, 6, (float) 2.00, date, date, "test");
+        Order ord1 = new Order(3, customer, product,  6, (float) 2.00, date, date, "test");
         Assert.assertEquals(1, dao.UpdateOrder(ord1));
     }
 
@@ -107,9 +107,9 @@ public class DAOTest {
         Customer customer = listCustomer.get(0);
         Product product = new Product(3, (float) 4.00, 5, true, "test", "1", "2");
         Date date = new Date(2011, 05, 24);
-        Order or = new Order(1, customer, product, 2, (float) 2.00, date, date, "test");
-        Order ord = new Order(1, customer, product, -2, (float) 2.00, date, date, "test");
-        Order ord1 = new Order(1, customer, product, 1, (float) -5.00, date, date, "test");
+        Order or = new Order(1, customer, product,  2, (float) 2.00, date, date, "test");
+        Order ord = new Order(1, customer, product,  -2, (float) 2.00, date, date, "test");
+        Order ord1 = new Order(1, customer, product,  1, (float) -5.00, date, date, "test");
         dao.AddOrder(or);
         Assert.assertEquals(0, dao.UpdateOrder(ord));
         Assert.assertEquals(0, dao.UpdateOrder(ord1));
@@ -122,7 +122,7 @@ public class DAOTest {
         Customer customer = listCustomer.get(0);
         Product product = new Product(3, (float) 4.00, 5, true, "test", "1", "2");
         Date date = new Date(2011, 05, 24);
-        Order ord = new Order(1, customer, product, 2, (float) 2.00, date, date, "test");
+        Order ord = new Order(1, customer, product,  2, (float) 2.00, date, date, "test");
         Assert.assertEquals(0, dao.UpdateOrder(ord));
     }
 
@@ -132,7 +132,7 @@ public class DAOTest {
         Customer customer = listCustomer.get(0);
         Product product = new Product(3, (float) 4.00, 5, true, "test", "1", "2");
         Date date = new Date(2011, 05, 24);
-        Order ord = new Order(1, customer, product, 2, (float) 2.00, date, date, "test");
+        Order ord = new Order(1, customer, product,  2, (float) 2.00, date, date, "test");
         dao.AddOrder(ord);
         Assert.assertEquals(1, dao.DeleteOrder(1));
     }
@@ -215,7 +215,7 @@ public class DAOTest {
         Customer customer = listCustomer.get(0);
         Product product = new Product(3, (float) 4.00, 5, true, "test", "1", "2");
         Date date = new Date(2011, 05, 24);
-        Order ord = new Order(3, customer, product, 5, (float) 2.00, date, date, "test");
+        Order ord = new Order(3, customer, product,  5, (float) 2.00, date, date, "test");
         dao.AddOrder(ord);
         Order order = dao.getCustomerOrderByid(customer, 3);
         Assert.assertEquals(order.getOrdernumber(), ord.getOrdernumber());
@@ -234,7 +234,7 @@ public class DAOTest {
         Customer customer = listCustomer.get(0);
         Product product = new Product(3, (float) 4.00, 5, true, "test", "1", "2");
         Date date = new Date(2011, 05, 24);
-        Order ord = new Order(3, customer, product, 5, (float) 2.00, date, date, "test");
+        Order ord = new Order(3, customer, product,  5, (float) 2.00, date, date, "test");
         dao.AddOrder(ord);
         Assert.assertEquals(dao.getCustomerOrderByid(customer, 1), null);
     }
@@ -245,7 +245,7 @@ public class DAOTest {
         Customer customer = listCustomer.get(0);
         Product product = new Product(3, (float) 4.00, 5, true, "test", "1", "2");
         Date date = new Date(2011, 05, 24);
-        Order ord = new Order(3, customer, product, 5, (float) 2.00, date, date, "test");
+        Order ord = new Order(3, customer, product,  5, (float) 2.00, date, date, "test");
         dao.AddOrder(ord);
         List<Order> listOrder = dao.GetOrderByCustomer(customer);
         Assert.assertEquals(1, listOrder.size());
@@ -263,7 +263,7 @@ public class DAOTest {
         Customer customer = listCustomer.get(0);
         Product product = new Product(3, (float) 4.00, 5, true, "test", "1", "2");
         Date date = new Date(2011, 05, 24);
-        Order ord = new Order(3, customer, product, 5, (float) 2.00, date, date, "test");
+        Order ord = new Order(3, customer, product,  5, (float) 2.00, date, date, "test");
         dao.AddOrder(ord);
         Customer cust = new Customer(5, "Big Bill Company", "20 rue de la paix", "FL", "MIAMI", "www.bigbill.example.com");
         List<Order> listeVide = new LinkedList<>();
@@ -276,7 +276,7 @@ public class DAOTest {
         Customer customer = listCustomer.get(0);
         Product product = new Product(3, (float) 4.00, 5, true, "test", "1", "2");
         Date date = new Date(2011, 05, 24);
-        Order ord = new Order(3, customer, product, 5, (float) 2.00, date, date, "test");
+        Order ord = new Order(3, customer, product,  5, (float) 2.00, date, date, "test");
         dao.AddOrder(ord);
         Map<String, Float> mapVierge = new HashMap<>();
         Date dateDeb = new Date(2011, 05, 25);
@@ -292,7 +292,7 @@ public class DAOTest {
         Customer customer = listCustomer.get(0);
         Product product = new Product(3, (float) 4.00, 5, true, "test", "1", "2");
         Date date = new Date(2011, 05, 24);
-        Order ord = new Order(3, customer, product, 5, (float) 2.00, date, date, "test");
+        Order ord = new Order(3, customer, product,  5, (float) 2.00, date, date, "test");
         dao.AddOrder(ord);
         //On créer une carte vierge :
         Map<String, Float> mapVierge = new HashMap<>();
@@ -324,7 +324,7 @@ public class DAOTest {
         Customer customer = listCustomer.get(0);
         Product product = new Product(3, (float) 4.00, 5, true, "test", "1", "2");
         Date date = new Date(2011, 05, 24);
-        Order ord = new Order(3, customer, product, 5, (float) 2.00, date, date, "test");
+        Order ord = new Order(3, customer, product,  5, (float) 2.00, date, date, "test");
         dao.AddOrder(ord);
         //On créer une carte vierge :
         Map<String, Float> mapVierge = new HashMap<>();
@@ -342,7 +342,7 @@ public class DAOTest {
         Customer customer = listCustomer.get(0);
         Product product = new Product(3, (float) 4.00, 5, true, "test", "1", "2");
         Date date = new Date(2011, 05, 24);
-        Order ord = new Order(3, customer, product, 5, (float) 2.00, date, date, "test");
+        Order ord = new Order(3, customer, product,  5, (float) 2.00, date, date, "test");
         dao.AddOrder(ord);
         Map<String, Float> mapVierge = new HashMap<>();
         Date dateDeb = new Date(2011, 05, 25);
@@ -358,7 +358,7 @@ public class DAOTest {
         Customer customer = listCustomer.get(0);
         Product product = new Product(3, (float) 4.00, 5, true, "test", "1", "2");
         Date date = new Date(2011, 05, 24);
-        Order ord = new Order(3, customer, product, 5, (float) 2.00, date, date, "test");
+        Order ord = new Order(3, customer, product,  5, (float) 2.00, date, date, "test");
         dao.AddOrder(ord);
         //On créer une carte vierge :
         Map<String, Float> mapVierge = new HashMap<>();
@@ -390,7 +390,7 @@ public class DAOTest {
         Customer customer = listCustomer.get(0);
         Product product = new Product(3, (float) 4.00, 5, true, "test", "1", "2");
         Date date = new Date(2011, 05, 24);
-        Order ord = new Order(3, customer, product, 5, (float) 2.00, date, date, "test");
+        Order ord = new Order(3, customer, product,  5, (float) 2.00, date, date, "test");
         dao.AddOrder(ord);
         //On créer une carte vierge :
         Map<String, Float> mapVierge = new HashMap<>();
@@ -408,7 +408,7 @@ public class DAOTest {
         Customer customer = listCustomer.get(0);
         Product product = new Product(3, (float) 4.00, 5, true, "test", "1", "2");
         Date date = new Date(2011, 05, 24);
-        Order ord = new Order(3, customer, product, 5, (float) 2.00, date, date, "test");
+        Order ord = new Order(3, customer, product,  5, (float) 2.00, date, date, "test");
         dao.AddOrder(ord);
         Map<String, Float> mapVierge = new HashMap<>();
         Date dateDeb = new Date(2011, 05, 25);
@@ -424,7 +424,7 @@ public class DAOTest {
         Customer customer = listCustomer.get(0);
         Product product = new Product(3, (float) 4.00, 5, true, "test", "1", "2");
         Date date = new Date(2011, 05, 24);
-        Order ord = new Order(3, customer, product, 5, (float) 2.00, date, date, "test");
+        Order ord = new Order(3, customer, product,  5, (float) 2.00, date, date, "test");
         dao.AddOrder(ord);
         //On créer une carte vierge :
         Map<String, Float> mapVierge = new HashMap<>();
@@ -456,7 +456,7 @@ public class DAOTest {
         Customer customer = listCustomer.get(0);
         Product product = new Product(3, (float) 4.00, 5, true, "test", "1", "2");
         Date date = new Date(2011, 05, 24);
-        Order ord = new Order(3, customer, product, 5, (float) 2.00, date, date, "test");
+        Order ord = new Order(3, customer, product,  5, (float) 2.00, date, date, "test");
         dao.AddOrder(ord);
         //On créer une carte vierge :
         Map<String, Float> mapVierge = new HashMap<>();
@@ -481,7 +481,7 @@ public class DAOTest {
         Customer customer = listCustomer.get(0);
         Product product = new Product(3, (float) 4.00, 5, true, "test", "1", "2");
         Date date = new Date(2011, 05, 24);
-        Order ord = new Order(3, customer, product, 5, (float) 2.00, date, date, "test");
+        Order ord = new Order(3, customer, product,  5, (float) 2.00, date, date, "test");
         dao.AddOrder(ord);
         //Customer cust = new Customer(5, "Big Bill Company", "20 rue de la paix", "FL", "MIAMI", "www.bigbill.example.com");
         Assert.assertEquals(dao.getCustomerOrderByid(customer, 3).getCustomer(), customer);
@@ -495,7 +495,7 @@ public class DAOTest {
         Customer customer = listCustomer.get(0);
         Product product = new Product(3, (float) 4.00, 5, true, "test", "1", "2");
         Date date = new Date(2011, 05, 24);
-        Order ord = new Order(3, customer, product, 5, (float) 2.00, date, date, "test");
+        Order ord = new Order(3, customer, product,  5, (float) 2.00, date, date, "test");
         dao.AddOrder(ord);
         //Customer cust = new Customer(5, "Big Bill Company", "20 rue de la paix", "FL", "MIAMI", "www.bigbill.example.com");
         Assert.assertEquals(dao.getCustomerOrderByid(customer, 2), null);

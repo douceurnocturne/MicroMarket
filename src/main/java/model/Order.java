@@ -21,6 +21,7 @@ public class Order {
     private final Date saledate;
     private final Date shippingdate;
     private final String freight;
+    private final float price;
 
     public Order(int ordernumber, Customer customer, Product product,
             int quantity, float shippingcost, Date saledate, Date shippingdate, String freight) {
@@ -32,6 +33,7 @@ public class Order {
         this.saledate = saledate;
         this.shippingdate = shippingdate;
         this.freight = freight;
+        this.price = product.getPrice()*quantity;
 
     }
 
@@ -67,5 +69,9 @@ public class Order {
 
     public String getFreight() {
         return this.freight;
+    }
+    
+    public float getPrice() {
+        return this.price;
     }
 }

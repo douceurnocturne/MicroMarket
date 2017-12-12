@@ -13,6 +13,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <script	src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
        <script src="http://builds.handlebarsjs.com.s3.amazonaws.com/handlebars-v4.0.11.js"></script>
+       <script src="handlebars-intl/dist/locale-data/fr.js"></script>
 
         <link rel="stylesheet" href="css/W3Style.css">
         <link rel="stylesheet" href="css/CustomerStyle.css">
@@ -32,6 +33,7 @@
             <th>Order Number</th>
             <th>Produit description</th>
             <th>Quantite</th>
+            <th>Price</th>
             <th>Shipping cost</th>
             <th>Sales date</th>
             <th>Shipping date</th>
@@ -41,7 +43,8 @@
                  {{#orders}}
                 <TR>
                     <TD>{{ordernumber}}</TD><TD>{{product.description}}</TD>                    
-                    <TD>{{quantity}}</TD><TD>{{shippingcost}}</TD>
+                    <TD>{{quantity}}</TD><TD>{{price}}  €</TD>
+                    <TD>{{shippingcost}} €</TD>
                     <TD>{{saledate}}</TD><TD>{{shippingdate}}</TD>
                     <TD>{{freight}}</TD>
                      
