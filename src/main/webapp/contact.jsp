@@ -37,7 +37,8 @@
 
                 <div class="w3-left w3-hide-small">
                     <a href="${pageContext.request.contextPath}/customer.jsp" class="w3-bar-item w3-button"><i class="fa fa-th"></i> Back to customer </a>
-                    <a href="#team" class="w3-bar-item w3-button"><i class="fa fa-user" title="Connected Users"></i> ${applicationScope.numberConnected}</a>
+                    <a href="#team" class="w3-bar-item w3-button" title="Connected Users"><i class="fa fa-user" ></i> ${applicationScope.numberConnected}</a>
+                    <a href="#team" class="w3-bar-item w3-button" title="Number of active sessions"><i class="fa fa-desktop" ></i> ${applicationScope.numberSession}</a>
                 </div>
 
             </div>

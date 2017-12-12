@@ -72,8 +72,8 @@
 
                 <div class="w3-left w3-hide-small">
                     <a href="${pageContext.request.contextPath}/AddOrder" class="w3-bar-item w3-button"><i class="fa fa-th"></i> New Order </a>
-                    <a href="#team" class="w3-bar-item w3-button"><i class="fa fa-user" title="Connected Users"></i> ${applicationScope.numberConnected}</a>
-                    <a href="#team" class="w3-bar-item w3-button"><i class="fa fa-desktop" title="Number of active sessions"></i> ${applicationScope.numberSession}</a>
+                    <a href="#team" class="w3-bar-item w3-button" title="Connected Users"><i class="fa fa-user" ></i> ${applicationScope.numberConnected}</a>
+                    <a href="#team" class="w3-bar-item w3-button" title="Number of active sessions"><i class="fa fa-desktop" ></i> ${applicationScope.numberSession}</a>
                     <a href="#pricing" class="w3-bar-item w3-button"><i class="fa fa-usd"></i> PRICING</a>
                     <a href="${pageContext.request.contextPath}/contact.jsp" class="w3-bar-item w3-button">Contact us</a>
                 </div>
