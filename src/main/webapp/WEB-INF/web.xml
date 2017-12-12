@@ -38,7 +38,7 @@
     </listener>
     <session-config>
         <session-timeout>
-            2
+            8
         </session-timeout>
     </session-config>
     <welcome-file-list>
