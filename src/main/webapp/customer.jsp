@@ -13,7 +13,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <script	src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
        <script src="http://builds.handlebarsjs.com.s3.amazonaws.com/handlebars-v4.0.11.js"></script>
-
+       <link rel="shortcut icon" type="image/png" href="css/market.png"/>
         <link rel="stylesheet" href="css/W3Style.css">
         <link rel="stylesheet" href="css/CustomerStyle.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
@@ -73,6 +73,7 @@
                 <div class="w3-left w3-hide-small">
                     <a href="${pageContext.request.contextPath}/AddOrder" class="w3-bar-item w3-button"><i class="fa fa-th"></i> New Order </a>
                     <a href="#team" class="w3-bar-item w3-button"><i class="fa fa-user" title="Connected Users"></i> ${applicationScope.numberConnected}</a>
+                    <a href="#team" class="w3-bar-item w3-button"><i class="fa fa-desktop" title="Number of active sessions"></i> ${applicationScope.numberSession}</a>
                     <a href="#pricing" class="w3-bar-item w3-button"><i class="fa fa-usd"></i> PRICING</a>
                     <a href="${pageContext.request.contextPath}/contact.jsp" class="w3-bar-item w3-button">Contact us</a>
                 </div>

@@ -28,6 +28,9 @@
         <url-pattern>/admin.jsp</url-pattern>
         <url-pattern>/customer.jsp</url-pattern>
         <url-pattern>/errorView.jsp</url-pattern>
+        <url-pattern>/AddOrder</url-pattern>
+        <url-pattern>/DeleteOrder</url-pattern>
+        <url-pattern>/UpdateOrder</url-pattern>
     </filter-mapping>
     <listener>
         <description>ApplicationListener</description>
@@ -35,7 +38,7 @@
     </listener>
     <session-config>
         <session-timeout>
-            30
+            2
         </session-timeout>
     </session-config>
     <welcome-file-list>

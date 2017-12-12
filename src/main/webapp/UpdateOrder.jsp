@@ -16,6 +16,7 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="css/AddOrderStyle.css"> 
+        <link rel="shortcut icon" type="image/png" href="css/market.png"/>
         <script	src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
         <script type="text/javascript" src="Js/UpdateJS.js"></script>
         <title>Update Order</title>
@@ -35,6 +36,7 @@
                 <div class="w3-left w3-hide-small">
                     <a href="${pageContext.request.contextPath}/customer.jsp" class="w3-bar-item w3-button"><i class="fa fa-th"></i> Go Back</a>
                     <a href="#team" class="w3-bar-item w3-button"><i class="fa fa-user" title="Connected Users"></i> ${applicationScope.numberConnected}</a>
+                                        <a href="#team" class="w3-bar-item w3-button"><i class="fa fa-desktop" title="Number of active sessions"></i> ${applicationScope.numberSession}</a>
                     <a href="#pricing" class="w3-bar-item w3-button"><i class="fa fa-usd"></i> PRICING</a>
                     <a href="${pageContext.request.contextPath}/contact.jsp" class="w3-bar-item w3-button">Contact us</a>
                 </div>

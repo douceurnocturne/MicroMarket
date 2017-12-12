@@ -39,8 +39,8 @@ public class LoginController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         boolean isAdmin = false;
         String action = request.getParameter("act");
+        int connected = (Integer) request.getSession().getServletContext().getAttribute("numberConnected");
         action = (action == null) ? "" : action;
-
         switch (action) {
             case "out":
                 request.getSession().invalidate();
@@ -54,12 +54,13 @@ public class LoginController extends HttpServlet {
                 String pass = request.getParameter("pass");
                 String adminUser = getInitParameter("login");
                 String adminPassword = getInitParameter("pass");
-                String adminName = getInitParameter("userName");
+                String adminName = getInitParameter("userName");           
                 if (user.equals(adminUser) && pass.equals(adminPassword)) {
 
                     isAdmin = true;
                     Customer admin = new Customer(0, adminName, "--", "--", "--", "--");
                     request.getSession().setAttribute("user", admin);
+                    request.getSession().getServletContext().setAttribute("numberConnected", connected+1);
                     request.getRequestDispatcher("admin.jsp").forward(request, response);
                 } else {
                     try {
@@ -74,6 +75,7 @@ public class LoginController extends HttpServlet {
                         Customer customer = dao.Login(user, id);
                         if (customer != null) {
                             request.getSession().setAttribute("user", customer);
+                            request.getSession().getServletContext().setAttribute("numberConnected", connected+1);
                             response.sendRedirect(request.getContextPath() + "/customer.jsp");
 
                         } else {

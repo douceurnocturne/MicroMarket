@@ -7,6 +7,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+                <link rel="shortcut icon" type="image/png" href="css/market.png"/>
 		<title>Error</title>
 	</head>
 	<body>

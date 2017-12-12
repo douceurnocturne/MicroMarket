@@ -10,10 +10,9 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
+import model.Customer;
 import model.DAO;
 import model.DataSourceFactory;
 import org.apache.derby.tools.ij;
@@ -31,6 +30,7 @@ public class ApplicationListener implements ServletContextListener, HttpSessionL
             initializeDatabase();
         }
         sce.getServletContext().setAttribute("numberConnected", 0);
+        sce.getServletContext().setAttribute("numberSession", 0);    
     }
 
     @Override
@@ -79,23 +79,32 @@ public class ApplicationListener implements ServletContextListener, HttpSessionL
         System.out.println("sessionCreated - add one session into counter");
         se.getSession().getServletContext().log("Creating session");
         // On incrémente le nombre d'utilisateurs
-        int connected = (Integer) se.getSession().getServletContext().getAttribute("numberConnected");
-        connected++;
+        int connected = (Integer) se.getSession().getServletContext().getAttribute("numberSession");
+        connected+=1;
         // On stocke ce nombre dans le contexte d'application
-        se.getSession().getServletContext().setAttribute("numberConnected", connected);
+        se.getSession().getServletContext().setAttribute("numberSession", connected);
 
     }
 
     @Override
     public void sessionDestroyed(HttpSessionEvent se) {
         System.out.println("sessionDestroyed - deduct one session from counter");
-		se.getSession().getServletContext().log("Destroying session");
+                Customer c = (Customer) se.getSession().getAttribute("user");
+                String name="";
+                if (c!=null) {
+                    name=c.getName();
+                }
+		se.getSession().getServletContext().log("Destroying session for "+name);
                 int connected=0;
+                int sessionnumber = 0;
                 ServletContext session = se.getSession().getServletContext();
                 if (session != null ) {
                     connected = (Integer) session.getAttribute("numberConnected");
+                    sessionnumber = (Integer) session.getAttribute("numberSession");
 		connected-=1;
+                sessionnumber-=1;
                 se.getSession().getServletContext().setAttribute("numberConnected", connected);
+                se.getSession().getServletContext().setAttribute("numberSession", sessionnumber);
                 } 
 		
     }

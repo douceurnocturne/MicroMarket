@@ -45,6 +45,7 @@
                     <a class="w3-bar-item w3-button"> <i class="fa fa-calendar"> </i> End Date : 
                      <input id="end_date" required name="end_date" type="date" value="2012-01-01"></a>  
                                          <a href="#" class="w3-bar-item w3-button"><i class="fa fa-user" title="Connected Users"></i> ${applicationScope.numberConnected}</a>
+                                                             <a href="#team" class="w3-bar-item w3-button"><i class="fa fa-desktop" title="Number of active sessions"></i> ${applicationScope.numberSession}</a>
                     </div>
             </div>
         </div>
