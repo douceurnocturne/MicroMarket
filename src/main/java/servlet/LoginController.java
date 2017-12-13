@@ -42,7 +42,8 @@ public class LoginController extends HttpServlet {
         action = (action == null) ? "" : action;
         switch (action) {
             case "out":
-                request.getSession().invalidate();
+                //request.getSession().invalidate();
+                request.getSession().getServletContext().setAttribute("numberConnected", connected-1);
                 response.sendRedirect(request.getContextPath() + "/Login.jsp");
                 break;
 

@@ -7,7 +7,7 @@ package model;
 
 /**
  *
- * @author xzait
+ * @author Ehsan
  */
 public class Product {
 
