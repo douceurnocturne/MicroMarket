@@ -19,6 +19,16 @@ public class Product {
     private final String description;
     private final String code;
 
+    /**
+     *
+     * @param productID
+     * @param price
+     * @param availableQuantity
+     * @param available
+     * @param description
+     * @param manufacturers
+     * @param code
+     */
     public Product(int productID, float price, int availableQuantity, boolean available,
             String description, String manufacturers, String code) {
         this.productid = productID;
@@ -27,7 +37,7 @@ public class Product {
         this.available = available;
         this.manufacturer = manufacturers;
         this.description = description;
-        this.code=code;
+        this.code = code;
     }
 
     public int getProductid() {
@@ -37,6 +47,7 @@ public class Product {
     public String getDescription() {
         return this.description;
     }
+
     public String getCode() {
         return this.code;
     }
@@ -48,7 +59,7 @@ public class Product {
     public float getPrice() {
         return this.price;
     }
-    
+
     public String getManufacturer() {
         return this.manufacturer;
     }

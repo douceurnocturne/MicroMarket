@@ -18,6 +18,15 @@ public class Customer {
     private final String city;
     private final String email;
 
+    /**
+     * 
+     * @param customerid
+     * @param name
+     * @param address1
+     * @param state
+     * @param city
+     * @param email 
+     */
     public Customer(int customerid, String name, String address1, String state, String city, String email) {
         this.customerid = customerid;
         this.name = name;
@@ -26,7 +35,7 @@ public class Customer {
         this.city = city;
         this.email = email;
     }
-
+    
     public String getName() {
         return name;
     }

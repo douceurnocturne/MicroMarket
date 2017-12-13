@@ -23,6 +23,17 @@ public class Order {
     private final String freight;
     private final float price;
 
+    /**
+     *
+     * @param ordernumber
+     * @param customer
+     * @param product
+     * @param quantity
+     * @param shippingcost
+     * @param saledate
+     * @param shippingdate
+     * @param freight
+     */
     public Order(int ordernumber, Customer customer, Product product,
             int quantity, float shippingcost, Date saledate, Date shippingdate, String freight) {
         this.customer = customer;
@@ -33,16 +44,18 @@ public class Order {
         this.saledate = saledate;
         this.shippingdate = shippingdate;
         this.freight = freight;
-        this.price = product.getPrice()*quantity;
+        this.price = product.getPrice() * quantity;
 
     }
 
     public Date getSaledate() {
         return this.saledate;
     }
+
     public Date getShippingdate() {
         return this.shippingdate;
     }
+
     public float getOrderCostWithShipping() {
         return (this.quantity * this.product.getPrice()) + this.shippingcost;
     }
@@ -70,7 +83,7 @@ public class Order {
     public String getFreight() {
         return this.freight;
     }
-    
+
     public float getPrice() {
         return this.price;
     }
