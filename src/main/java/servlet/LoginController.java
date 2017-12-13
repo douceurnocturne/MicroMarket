@@ -37,7 +37,6 @@ public class LoginController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        boolean isAdmin = false;
         String action = request.getParameter("act");
         int connected = (Integer) request.getSession().getServletContext().getAttribute("numberConnected");
         action = (action == null) ? "" : action;
@@ -57,7 +56,6 @@ public class LoginController extends HttpServlet {
                 String adminName = getInitParameter("userName");           
                 if (user.equals(adminUser) && pass.equals(adminPassword)) {
 
-                    isAdmin = true;
                     Customer admin = new Customer(0, adminName, "--", "--", "--", "--");
                     request.getSession().setAttribute("user", admin);
                     request.getSession().getServletContext().setAttribute("numberConnected", connected+1);
